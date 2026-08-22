@@ -1,0 +1,18 @@
+{
+  "name": "Aviation Weather Operations Dashboard",
+  "short_name": "Aviation Weather",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#06172b",
+  "theme_color": "#06172b",
+  "orientation": "portrait",
+  "description": "Offline aviation weather operations dashboard",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
