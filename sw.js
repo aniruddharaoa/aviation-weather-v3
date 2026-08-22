@@ -1,4 +1,4 @@
-const C = "awo-v2-phase2-v2";
+const C = "awo-v2-combined-phase3-v1";
 const A = [
   "./",
   "./index.html",
