@@ -39,7 +39,9 @@
   --input:#ffffff;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -48,13 +50,20 @@ body{
   color:var(--text);
 }
 
-button,input,select,textarea{
+button,
+input,
+select,
+textarea{
   font:inherit;
 }
 
-button{cursor:pointer}
+button{
+  cursor:pointer;
+}
 
-.hidden{display:none!important}
+.hidden{
+  display:none!important;
+}
 
 header{
   position:sticky;
@@ -78,6 +87,10 @@ header{
 .small{
   font-size:12px;
   color:var(--muted);
+}
+
+.center{
+  text-align:center;
 }
 
 .actions{
@@ -174,7 +187,9 @@ label{
   margin:10px 0 5px;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
   min-height:44px;
   padding:10px;
@@ -184,7 +199,9 @@ input,select,textarea{
   color:var(--text);
 }
 
-textarea{min-height:90px}
+textarea{
+  min-height:90px;
+}
 
 .nav{
   display:flex;
@@ -213,16 +230,26 @@ textarea{min-height:90px}
   font-weight:900;
 }
 
-.cardBody{padding:13px}
+.cardBody{
+  padding:13px;
+}
 
 .grid{
   display:grid;
   gap:10px;
 }
 
-.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.g3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.g4{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
 
 .kpi{
   background:var(--panel3);
@@ -248,7 +275,8 @@ table{
   min-width:760px;
 }
 
-th,td{
+th,
+td{
   padding:9px;
   border:1px solid var(--line);
   font-size:12px;
@@ -268,11 +296,26 @@ th{
   display:inline-block;
 }
 
-.GREEN{background:var(--green)}
-.YELLOW{background:var(--amber);color:#091827}
-.RED{background:var(--red)}
-.PURPLE{background:var(--purple)}
-.GREY{background:var(--grey)}
+.GREEN{
+  background:var(--green);
+}
+
+.YELLOW{
+  background:var(--amber);
+  color:#091827;
+}
+
+.RED{
+  background:var(--red);
+}
+
+.PURPLE{
+  background:var(--purple);
+}
+
+.GREY{
+  background:var(--grey);
+}
 
 .choiceRow{
   display:flex;
@@ -290,9 +333,18 @@ th{
   color:#fff;
 }
 
-.choice.red{background:var(--red)}
-.choice.yellow{background:var(--amber);color:#07182c}
-.choice.green{background:var(--green)}
+.choice.red{
+  background:var(--red);
+}
+
+.choice.yellow{
+  background:var(--amber);
+  color:#07182c;
+}
+
+.choice.green{
+  background:var(--green);
+}
 
 .choice.selected{
   border-color:white;
@@ -357,7 +409,28 @@ th{
   margin:7px 0;
 }
 
-/* Camera */
+.imgGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:10px;
+}
+
+.imgCard{
+  border:1px solid var(--line);
+  background:var(--panel3);
+  border-radius:10px;
+  padding:8px;
+}
+
+.imgCard img{
+  width:100%;
+  aspect-ratio:16/10;
+  object-fit:cover;
+  border-radius:7px;
+}
+
+
+/* CAMERA */
 
 #cameraOverlay{
   position:fixed;
@@ -405,9 +478,20 @@ th{
   z-index:105;
 }
 
-.guideRed{border:2px solid #ff4f48;color:#ff4f48}
-.guideYellow{border:2px solid var(--yellow);color:var(--yellow)}
-.guideGreen{border:2px solid #3be277;color:#3be277}
+.guideRed{
+  border:2px solid #ff4f48;
+  color:#ff4f48;
+}
+
+.guideYellow{
+  border:2px solid var(--yellow);
+  color:var(--yellow);
+}
+
+.guideGreen{
+  border:2px solid #3be277;
+  color:#3be277;
+}
 
 #guideArrow{
   font-size:38px;
@@ -415,7 +499,9 @@ th{
 }
 
 @keyframes pulse{
-  50%{opacity:.35}
+  50%{
+    opacity:.35;
+  }
 }
 
 #radialCanvas{
@@ -485,61 +571,123 @@ th{
 }
 
 @media(max-width:760px){
-  .g2,.g3,.g4{grid-template-columns:1fr}
-  .brand{font-size:14px}
-  main{padding:8px}
-  header{align-items:flex-start}
+
+  .g2,
+  .g3,
+  .g4{
+    grid-template-columns:1fr;
+  }
+
+  .brand{
+    font-size:14px;
+  }
+
+  main{
+    padding:8px;
+  }
+
+  header{
+    align-items:flex-start;
+  }
+
 }
 </style>
 </head>
 
+
 <body>
 
 <header id="header" class="hidden">
+
   <div>
-    <div class="brand">AWO — AVIATION WEATHER OPERATIONS</div>
+
+    <div class="brand">
+      AWO — AVIATION WEATHER OPERATIONS
+    </div>
+
     <div id="userLine" class="small"></div>
+
   </div>
 
   <div class="actions">
-    <button class="btn" id="themeBtn">◐</button>
-    <button class="btn danger" id="logoutBtn">LOGOUT</button>
+
+    <button class="btn" id="themeBtn">
+      ◐
+    </button>
+
+    <button class="btn danger" id="logoutBtn">
+      LOGOUT
+    </button>
+
   </div>
+
 </header>
 
+
 <main>
+
 
 <!-- LOGIN -->
 
 <section id="login" class="loginWrap">
+
   <div class="loginCard">
-    <div class="logo">AWO</div>
-    <h1>AVIATION WEATHER OPERATIONS</h1>
+
+    <div class="logo">
+      AWO
+    </div>
+
+    <h1>
+      AVIATION WEATHER OPERATIONS
+    </h1>
 
     <div class="small center">
       Personal role-based weather and imagery platform
     </div>
 
-    <label>User ID</label>
-    <input id="loginId" placeholder="ARAOA">
+    <label>
+      User ID
+    </label>
 
-    <label>Password</label>
-    <input id="loginPass" type="password">
+    <input
+      id="loginId"
+      placeholder="ARAOA"
+      autocomplete="username"
+    >
 
-    <button class="btn primary" style="width:100%;margin-top:14px" id="loginBtn">
+    <label>
+      Password
+    </label>
+
+    <input
+      id="loginPass"
+      type="password"
+      autocomplete="current-password"
+    >
+
+    <button
+      class="btn primary"
+      style="width:100%;margin-top:14px"
+      id="loginBtn"
+    >
       LOGIN
     </button>
 
-    <p id="loginError" style="color:#ff7770"></p>
+    <p
+      id="loginError"
+      style="color:#ff7770"
+    ></p>
 
     <div class="small center">
       Initial Administrator: ARAOA / 00007
     </div>
+
   </div>
+
 </section>
 
 
-<!-- MAIN APP -->
+<!-- APPLICATION -->
 
 <section id="app" class="hidden">
 
@@ -549,6 +697,7 @@ th{
 
 </section>
 
+
 </main>
 
 
@@ -556,46 +705,107 @@ th{
 
 <section id="cameraOverlay" class="hidden">
 
-  <video id="cameraVideo" autoplay playsinline></video>
-  <canvas id="captureCanvas" class="hidden"></canvas>
-  <img id="cameraPhoto" class="hidden">
+  <video
+    id="cameraVideo"
+    autoplay
+    playsinline
+  ></video>
+
+  <canvas
+    id="captureCanvas"
+    class="hidden"
+  ></canvas>
+
+  <img
+    id="cameraPhoto"
+    class="hidden"
+  >
+
 
   <div class="cameraTop">
-    <button class="btn danger" id="closeCamera">✕</button>
 
-    <div class="cameraBadge" id="targetBearing">
+    <button
+      class="btn danger"
+      id="closeCamera"
+    >
+      ✕
+    </button>
+
+    <div
+      class="cameraBadge"
+      id="targetBearing"
+    >
       TARGET —
     </div>
 
-    <button class="btn" id="referenceButton">
+    <button
+      class="btn"
+      id="referenceButton"
+    >
       REFERENCE
     </button>
+
   </div>
 
-  <div id="guide" class="guideRed">
-    <div id="guideText">TURN RIGHT</div>
-    <div id="guideArrow">›››</div>
+
+  <div
+    id="guide"
+    class="guideRed"
+  >
+
+    <div id="guideText">
+      TURN RIGHT
+    </div>
+
+    <div id="guideArrow">
+      ›››
+    </div>
+
   </div>
+
 
   <div class="centerPointer"></div>
 
-  <canvas id="radialCanvas" width="1000" height="150"></canvas>
 
-  <div id="liveBearing" class="liveBearing">
+  <canvas
+    id="radialCanvas"
+    width="1000"
+    height="150"
+  ></canvas>
+
+
+  <div
+    id="liveBearing"
+    class="liveBearing"
+  >
     —°
   </div>
 
-  <div id="cameraWeather" class="weatherOverlay"></div>
+
+  <div
+    id="cameraWeather"
+    class="weatherOverlay"
+  ></div>
+
 
   <div class="cameraButtons">
 
-    <button class="btn" id="overrideBtn">
+    <button
+      class="btn"
+      id="overrideBtn"
+    >
       OVERRIDE
     </button>
 
-    <button class="shutter" id="captureBtn"></button>
+    <button
+      class="shutter"
+      id="captureBtn"
+    ></button>
 
-    <button class="btn" id="switchCamBtn">
+    <button
+      class="btn"
+      id="switchCamBtn"
+    >
       SWITCH
     </button>
 
@@ -605,85 +815,471 @@ th{
 
 
 <script>
+
 /* =====================================================
    DATABASE
 ===================================================== */
 
-const DBKEY="AWO_HYBRID_DATABASE";
+const DBKEY =
+  "AWO_HYBRID_DATABASE";
 
-const WEATHER_CODES=[
-"NIL","HZ","BR","FG",
-"-DZ","DZ","+DZ",
-"-RA","RA","+RA",
-"-SN","SN","+SN",
-"TS","SHRA","GR","GS"
+const OLD_DBKEY =
+  "awo_v2_foundation_db";
+
+const SESSIONKEY =
+  "AWO_SESSION";
+
+
+const WEATHER_CODES = [
+  "NIL",
+  "HZ",
+  "BR",
+  "FG",
+  "-DZ",
+  "DZ",
+  "+DZ",
+  "-RA",
+  "RA",
+  "+RA",
+  "-SN",
+  "SN",
+  "+SN",
+  "TS",
+  "SHRA",
+  "GR",
+  "GS"
 ];
 
-function createDB(){
 
-return {
+function createEmptyDatabase(){
 
- users:{
-  ARAOA:{
-   id:"ARAOA",
-   password:"00007",
-   role:"ADMIN",
-   active:true,
-   primary:true,
-   helipads:[]
+  return {
+
+    users:{},
+
+    helipads:{},
+
+    observations:[],
+
+    images:[],
+
+    airreps:[],
+
+    tasks:[],
+
+    messages:[],
+
+    audit:[],
+
+    requests:[],
+
+    aviatorPrefs:{}
+
+  };
+
+}
+
+
+function safeParse(value){
+
+  if(!value){
+    return null;
   }
- },
 
- helipads:{},
+  try{
+    return JSON.parse(value);
+  }
+  catch(error){
+    return null;
+  }
 
- observations:[],
+}
 
- images:[],
 
- airreps:[],
+function normalizeDatabase(raw){
 
- tasks:[],
+  const database =
+    raw &&
+    typeof raw === "object"
+      ? raw
+      : createEmptyDatabase();
 
- messages:[],
 
- audit:[]
+  if(
+    !database.users ||
+    typeof database.users !== "object" ||
+    Array.isArray(database.users)
+  ){
+    database.users = {};
+  }
+
+
+  if(
+    !database.helipads ||
+    typeof database.helipads !== "object" ||
+    Array.isArray(database.helipads)
+  ){
+    database.helipads = {};
+  }
+
+
+  if(!Array.isArray(database.observations)){
+    database.observations = [];
+  }
+
+  if(!Array.isArray(database.images)){
+    database.images = [];
+  }
+
+  if(!Array.isArray(database.airreps)){
+    database.airreps = [];
+  }
+
+  if(!Array.isArray(database.tasks)){
+    database.tasks = [];
+  }
+
+  if(!Array.isArray(database.messages)){
+    database.messages = [];
+  }
+
+  if(!Array.isArray(database.audit)){
+    database.audit = [];
+  }
+
+  if(!Array.isArray(database.requests)){
+    database.requests = [];
+  }
+
+  if(
+    !database.aviatorPrefs ||
+    typeof database.aviatorPrefs !== "object"
+  ){
+    database.aviatorPrefs = {};
+  }
+
+
+  Object.values(database.users)
+  .forEach(user=>{
+
+    if(!Array.isArray(user.helipads)){
+      user.helipads = [];
+    }
+
+    if(user.active === undefined){
+      user.active = true;
+    }
+
+  });
+
+
+  Object.values(database.helipads)
+  .forEach(helipad=>{
+
+    if(helipad.active === undefined){
+      helipad.active = true;
+    }
+
+    if(helipad.validity == null){
+      helipad.validity =
+        helipad.weatherValidityMinutes || 30;
+    }
+
+    if(!helipad.autoColour){
+      helipad.autoColour = "ON";
+    }
+
+    if(helipad.redVis == null){
+      helipad.redVis = 1000;
+    }
+
+    if(helipad.yellowVis == null){
+      helipad.yellowVis = 3000;
+    }
+
+    if(helipad.views == null){
+      helipad.views = 4;
+    }
+
+    if(!Array.isArray(helipad.viewConfig)){
+
+      helipad.viewConfig =
+        Array.from(
+          {
+            length:
+              Number(helipad.views || 4)
+          },
+
+          (_,index)=>({
+
+            id:
+              "V" + (index + 1),
+
+            label:
+              "VIEW " + (index + 1),
+
+            bearing:
+              (index * 90) % 360,
+
+            tolerance:
+              10,
+
+            reference:
+              null
+
+          })
+        );
+
+    }
+
+  });
+
+
+  return database;
+
+}
+
+
+/* =====================================================
+   LOAD DATABASE
+===================================================== */
+
+let db =
+  safeParse(
+    localStorage.getItem(DBKEY)
+  );
+
+
+/* Import previous Version 2 database if required */
+
+if(!db){
+
+  const previousDatabase =
+    safeParse(
+      localStorage.getItem(OLD_DBKEY)
+    );
+
+
+  if(previousDatabase){
+
+    db = {
+
+      users:
+        previousDatabase.users || {},
+
+      helipads:
+        previousDatabase.helipads || {},
+
+      observations:
+        previousDatabase.observations || [],
+
+      images:
+        previousDatabase.images || [],
+
+      airreps:
+        previousDatabase.airreps || [],
+
+      tasks:
+        previousDatabase.tasks || [],
+
+      messages:
+        previousDatabase.messages || [],
+
+      audit:
+        previousDatabase.audit || [],
+
+      requests:
+        previousDatabase.requests || [],
+
+      aviatorPrefs:
+        previousDatabase.aviatorPrefs || {}
+
+    };
+
+  }
+  else{
+
+    db =
+      createEmptyDatabase();
+
+  }
+
+}
+
+
+db =
+  normalizeDatabase(db);
+
+
+/* =====================================================
+   GUARANTEE PRIMARY ADMINISTRATOR
+===================================================== */
+
+const previousPrimaryAdmin =
+  db.users["ARAOA"] || {};
+
+
+db.users["ARAOA"] = {
+
+  ...previousPrimaryAdmin,
+
+  id:
+    "ARAOA",
+
+  password:
+    "00007",
+
+  role:
+    "ADMIN",
+
+  observerType:
+    null,
+
+  active:
+    true,
+
+  primary:
+    true,
+
+  helipads:
+    Array.isArray(
+      previousPrimaryAdmin.helipads
+    )
+      ? previousPrimaryAdmin.helipads
+      : []
 
 };
 
-}
 
-let db;
-
-try{
- db=JSON.parse(localStorage.getItem(DBKEY)) || createDB();
-}catch{
- db=createDB();
-}
+/* =====================================================
+   STORAGE
+===================================================== */
 
 function save(){
- localStorage.setItem(DBKEY,JSON.stringify(db));
+
+  try{
+
+    localStorage.setItem(
+      DBKEY,
+      JSON.stringify(db)
+    );
+
+    return true;
+
+  }
+  catch(error){
+
+    alert(
+      "Local storage is full or unavailable. " +
+      "Large image history may need to be exported or cleared."
+    );
+
+    return false;
+
+  }
+
 }
 
-function audit(action,detail){
 
- const user=currentUser();
+save();
 
- db.audit.unshift({
-  time:new Date().toISOString(),
-  user:user?user.id:"SYSTEM",
-  action,
-  detail
- });
-
- save();
-
-}
 
 function currentUser(){
 
- const id=localStorage.getItem("AWO_SESSION");
+  const id =
+    localStorage.getItem(
+      SESSIONKEY
+    );
 
- return id ? db.users[id] : null;
+
+  if(
+    !id ||
+    !db.users[id]
+  ){
+    return null;
+  }
+
+
+  return db.users[id];
+
+}
+
+
+function audit(
+  action,
+  detail
+){
+
+  const user =
+    currentUser();
+
+
+  db.audit.unshift({
+
+    time:
+      new Date().toISOString(),
+
+    user:
+      user
+        ? user.id
+        : "SYSTEM",
+
+    action,
+
+    detail
+
+  });
+
+
+  save();
+
+}
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function escapeHTML(value){
+
+  return String(
+    value == null
+      ? ""
+      : value
+  )
+  .replace(
+    /[&<>"']/g,
+    character=>({
+
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+
+    })[character]
+  );
+
+}
+
+
+function formatTime(value){
+
+  if(!value){
+    return "—";
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if(isNaN(date)){
+    return "—";
+  }
+
+
+  return date.toLocaleString();
 
 }
 
@@ -694,36 +1290,81 @@ function currentUser(){
 
 function login(){
 
- const id=document.getElementById("loginId").value.trim().toUpperCase();
- const pass=document.getElementById("loginPass").value;
+  const id =
+    document
+    .getElementById("loginId")
+    .value
+    .trim()
+    .toUpperCase();
 
- const u=db.users[id];
 
- if(!u || !u.active || u.password!==pass){
+  const password =
+    document
+    .getElementById("loginPass")
+    .value;
 
-  document.getElementById("loginError").textContent=
-  "Invalid User ID or password.";
 
-  return;
+  const user =
+    db.users[id];
 
- }
 
- localStorage.setItem("AWO_SESSION",id);
+  if(
+    !user ||
+    user.active === false ||
+    String(user.password) !==
+      String(password)
+  ){
 
- audit("LOGIN","User logged in");
+    document
+    .getElementById("loginError")
+    .textContent =
+      "Invalid User ID or password.";
 
- route();
+    return;
+
+  }
+
+
+  document
+  .getElementById("loginError")
+  .textContent = "";
+
+
+  localStorage.setItem(
+    SESSIONKEY,
+    id
+  );
+
+
+  audit(
+    "LOGIN",
+    "User logged in"
+  );
+
+
+  route();
 
 }
 
 
 function logout(){
 
- audit("LOGOUT","User logged out");
+  if(currentUser()){
 
- localStorage.removeItem("AWO_SESSION");
+    audit(
+      "LOGOUT",
+      "User logged out"
+    );
 
- route();
+  }
+
+
+  localStorage.removeItem(
+    SESSIONKEY
+  );
+
+
+  route();
 
 }
 
@@ -734,30 +1375,73 @@ function logout(){
 
 function route(){
 
- const user=currentUser();
+  const user =
+    currentUser();
 
- const login=document.getElementById("login");
- const app=document.getElementById("app");
- const header=document.getElementById("header");
 
- if(!user){
+  const loginPage =
+    document.getElementById("login");
 
-  login.classList.remove("hidden");
-  app.classList.add("hidden");
-  header.classList.add("hidden");
 
-  return;
+  const app =
+    document.getElementById("app");
 
- }
 
- login.classList.add("hidden");
- app.classList.remove("hidden");
- header.classList.remove("hidden");
+  const header =
+    document.getElementById("header");
 
- document.getElementById("userLine").textContent=
- `${user.id} • ${user.role}${user.observerType?" / "+user.observerType:""}`;
 
- buildNav(user);
+  if(!user){
+
+    loginPage.classList.remove(
+      "hidden"
+    );
+
+    app.classList.add(
+      "hidden"
+    );
+
+    header.classList.add(
+      "hidden"
+    );
+
+    return;
+
+  }
+
+
+  loginPage.classList.add(
+    "hidden"
+  );
+
+
+  app.classList.remove(
+    "hidden"
+  );
+
+
+  header.classList.remove(
+    "hidden"
+  );
+
+
+  document
+  .getElementById("userLine")
+  .textContent =
+
+    user.id +
+    " • " +
+    user.role +
+
+    (
+      user.observerType
+        ? " / " +
+          user.observerType
+        : ""
+    );
+
+
+  buildNavigation(user);
 
 }
 
@@ -766,488 +1450,99 @@ function route(){
    NAVIGATION
 ===================================================== */
 
-function buildNav(user){
+function buildNavigation(user){
 
- const nav=document.getElementById("nav");
+  const navigation =
+    document.getElementById("nav");
 
- let tabs=[];
 
- if(user.role==="ADMIN"){
+  let tabs = [];
 
-  tabs=[
-   ["Dashboard","adminDashboard"],
-   ["Helipads","adminHelipads"],
-   ["Users","adminUsers"],
-   ["Schedules","adminSchedules"],
-   ["Messages","adminMessages"],
-   ["Records","adminRecords"]
-  ];
 
- }
+  if(user.role === "ADMIN"){
 
- else if(user.role==="CAPTURER"){
+    tabs = [
 
-  tabs=[
-   ["Capture","capturer"],
-   ["History","captureHistory"]
-  ];
+      [
+        "Dashboard",
+        "adminDashboard"
+      ],
 
- }
+      [
+        "Helipads",
+        "adminHelipads"
+      ],
 
- else if(user.role==="OBSERVER" &&
-         user.observerType==="OUTSTATION"){
+      [
+        "Users",
+        "adminUsers"
+      ],
 
-  tabs=[
-   ["Weather","outstation"],
-   ["Camera","outCamera"],
-   ["History","outHistory"]
-  ];
+      [
+        "Schedules",
+        "adminSchedules"
+      ],
 
- }
+      [
+        "Messages",
+        "adminMessages"
+      ],
 
- else if(user.role==="OBSERVER"){
+      [
+        "Records",
+        "adminRecords"
+      ]
 
-  tabs=[
-   ["My Helipads","instation"],
-   ["Latest Updates","inHistory"]
-  ];
+    ];
 
- }
+  }
 
- else if(user.role==="AVIATOR"){
 
-  tabs=[
-   ["Latest Weather","aviator"],
-   ["AIRREP","airrep"],
-   ["Alerts","aviatorAlerts"]
-  ];
+  else if(
+    user.role === "CAPTURER"
+  ){
 
- }
+    tabs = [
 
- nav.innerHTML="";
+      [
+        "Capture",
+        "capturer"
+      ],
 
- tabs.forEach((t,i)=>{
+      [
+        "History",
+        "captureHistory"
+      ]
 
-  const b=document.createElement("button");
+    ];
 
-  b.className="btn";
+  }
 
-  b.textContent=t[0];
 
-  b.onclick=()=>showPage(t[1]);
+  else if(
+    user.role === "OBSERVER" &&
+    user.observerType ===
+      "OUTSTATION"
+  ){
 
-  nav.appendChild(b);
+    tabs = [
 
- });
+      [
+        "Weather",
+        "outstation"
+      ],
 
- showPage(tabs[0][1]);
+      [
+        "Camera",
+        "outCamera"
+      ],
 
-}
+      [
+        "History",
+        "outHistory"
+      ]
 
+    ];
 
-function showPage(page){
-
- if(page==="adminDashboard") renderAdminDashboard();
-
- if(page==="adminHelipads") renderAdminHelipads();
-
- if(page==="adminUsers") renderAdminUsers();
-
- if(page==="adminSchedules") renderAdminSchedules();
-
- if(page==="adminMessages") renderAdminMessages();
-
- if(page==="adminRecords") renderAdminRecords();
-
- if(page==="capturer") renderCapturer();
-
- if(page==="captureHistory") renderCaptureHistory();
-
- if(page==="outstation") renderOutstation();
-
- if(page==="outCamera") renderOutCamera();
-
- if(page==="outHistory") renderOutHistory();
-
- if(page==="instation") renderInstation();
-
- if(page==="inHistory") renderInstationHistory();
-
- if(page==="aviator") renderAviator();
-
- if(page==="airrep") renderAIRREP();
-
- if(page==="aviatorAlerts") renderAviatorAlerts();
-
-}
-
-
-/* =====================================================
-   STATUS ENGINE
-===================================================== */
-
-function latestObservation(helipad,source){
-
- let a=db.observations
-  .filter(o=>o.helipad===helipad);
-
- if(source){
-  a=a.filter(o=>o.source===source);
- }
-
- return a.sort(
-  (a,b)=>new Date(b.time)-new Date(a.time)
- )[0] || null;
-
-}
-
-
-function latestImage(helipad){
-
- return db.images
- .filter(i=>i.helipad===helipad)
- .sort(
-  (a,b)=>new Date(b.time)-new Date(a.time)
- )[0] || null;
-
-}
-
-
-function operationalObservation(h){
-
- if(h.mode==="OUTSTATION")
-  return latestObservation(h.id,"OUT");
-
- return latestObservation(h.id,"IN");
-
-}
-
-
-function statusFor(h){
-
- const o=operationalObservation(h);
- const img=latestImage(h.id);
-
- if(!o){
-
-  if(img) return "PURPLE";
-
-  return "GREY";
-
- }
-
- const age=
- (Date.now()-new Date(o.time).getTime())/60000;
-
- if(age > Number(h.validity||30)){
-
-  return img ? "PURPLE" : "GREY";
-
- }
-
- return o.systemColour || o.observerColour || "GREEN";
-
-}
-
-
-function calculateColour(h,data){
-
- if(h.autoColour==="OFF")
-   return data.observerColour;
-
- const v=Number(data.visibility);
- const wx=data.weather||[];
-
- if(
-   v < Number(h.redVis||1000) ||
-   data.htStatus==="HTNV" ||
-   wx.includes("TS") ||
-   wx.includes("+RA") ||
-   wx.includes("GR") ||
-   wx.includes("GS")
- ){
-  return "RED";
- }
-
- if(
-   v < Number(h.yellowVis||3000) ||
-   data.htStatus==="HTPV" ||
-   wx.includes("RA") ||
-   wx.includes("FG") ||
-   wx.includes("BR")
- ){
-  return "YELLOW";
- }
-
- return "GREEN";
-
-}
-
-
-/* =====================================================
-   ADMIN DASHBOARD
-===================================================== */
-
-function renderAdminDashboard(){
-
- const content=document.getElementById("content");
-
- const hs=Object.values(db.helipads)
- .filter(h=>h.active!==false);
-
- let counts={
-  GREEN:0,
-  YELLOW:0,
-  RED:0,
-  PURPLE:0,
-  GREY:0
- };
-
- hs.forEach(h=>counts[statusFor(h)]++);
-
- content.innerHTML=`
-
- <div class="grid g4">
-
-  <div class="kpi">
-   <span class="small">HELIPADS</span>
-   <b>${hs.length}</b>
-  </div>
-
-  <div class="kpi">
-   <span class="small">ACTIVE USERS</span>
-   <b>${Object.values(db.users).filter(u=>u.active).length}</b>
-  </div>
-
-  <div class="kpi">
-   <span class="small">OBSERVATIONS</span>
-   <b>${db.observations.length}</b>
-  </div>
-
-  <div class="kpi">
-   <span class="small">IMAGES</span>
-   <b>${db.images.length}</b>
-  </div>
-
- </div>
-
- <div class="card">
-
-  <div class="cardTitle">
-   CURRENT STATUS
-  </div>
-
-  <div class="cardBody grid g4">
-
-   ${["GREEN","YELLOW","RED","PURPLE","GREY"]
-   .map(c=>
-   `<div class="kpi ${c}">
-      ${c}<b>${counts[c]}</b>
-    </div>`)
-   .join("")}
-
-  </div>
-
- </div>
-
- <div class="card">
-
-  <div class="cardTitle">
-   HELIPAD STATUS
-  </div>
-
-  <div class="cardBody">
-
-   <div class="tableWrap">
-
-    <table>
-
-     <tr>
-      <th>Helipad</th>
-      <th>Status</th>
-      <th>Weather Source</th>
-      <th>Latest Image</th>
-     </tr>
-
-     ${
-      hs.map(h=>{
-
-       const o=operationalObservation(h);
-       const img=latestImage(h.id);
-
-       return `
-       <tr>
-        <td>${h.id}</td>
-        <td>
-         <span class="status ${statusFor(h)}">
-          ${statusFor(h)}
-         </span>
-        </td>
-        <td>${o?o.source:"—"}</td>
-        <td>${img?new Date(img.time).toLocaleTimeString():"NO IMAGE"}</td>
-       </tr>`;
-      }).join("")
-     }
-
-    </table>
-
-   </div>
-
-  </div>
-
- </div>
- `;
-
-}
-
-
-/* =====================================================
-   HELIPAD ADMINISTRATION
-===================================================== */
-
-function renderAdminHelipads(){
-
- const content=document.getElementById("content");
-
- content.innerHTML=`
-
- <div class="card">
-
-  <div class="cardTitle">
-   CREATE / EDIT HELIPAD
-  </div>
-
-  <div class="cardBody grid g2">
-
-   <div>
-
-    <label>Helipad Name / ID</label>
-    <input id="hName">
-
-    <label>Operating Mode</label>
-
-    <select id="hMode">
-     <option value="OUTSTATION">
-      Outstation Observer
-     </option>
-
-     <option value="CAP_IN">
-      Capturer + Instation Observer
-     </option>
-    </select>
-
-    <label>Active Views</label>
-
-    <select id="hViews">
-     <option>1</option>
-     <option>2</option>
-     <option>3</option>
-     <option selected>4</option>
-    </select>
-
-   </div>
-
-   <div>
-
-    <label>Weather Validity (minutes)</label>
-    <input id="hValidity" value="30" type="number">
-
-    <label>Automatic Colour</label>
-
-    <select id="hAuto">
-     <option>ON</option>
-     <option>OFF</option>
-    </select>
-
-    <label>RED below visibility (m)</label>
-    <input id="hRed" value="1000" type="number">
-
-    <label>YELLOW below visibility (m)</label>
-    <input id="hYellow" value="3000" type="number">
-
-   </div>
-
-  </div>
-
-  <div class="cardBody">
-
-   <button class="btn primary"
-   onclick="saveHelipad()">
-
-    SAVE HELIPAD
-
-   </button>
-
-  </div>
-
- </div>
-
- <div class="card">
-
-  <div class="cardTitle">
-   HELIPADS
-  </div>
-
-  <div class="cardBody">
-
-   <div class="tableWrap">
-
-    <table>
-
-     <tr>
-      <th>Helipad</th>
-      <th>Mode</th>
-      <th>Status</th>
-      <th>Views</th>
-      <th>Action</th>
-     </tr>
-
-     ${
-      Object.values(db.helipads)
-      .map(h=>`
-
-       <tr>
-
-        <td>${h.id}</td>
-
-        <td>${h.mode}</td>
-
-        <td>
-         <span class="status ${statusFor(h)}">
-          ${statusFor(h)}
-         </span>
-        </td>
-
-        <td>${h.views}</td>
-
-        <td>
-
-         <button class="btn"
-          onclick="configureViews('${h.id}')">
-
-          REFERENCE IMAGES
-
-         </button>
-
-        </td>
-
-       </tr>
-
-      `).join("")
-     }
-
-    </table>
-
-   </div>
-
-  </div>
-
- </div>
- `;
-
-}
-
-
-function saveHelipad(){
-
- const id=document.ge
+  }
+  
