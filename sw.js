@@ -1,26 +1,27 @@
-const C = "awo-v2-combined-phase3-v1";
-const A = [
+const CACHE = "awo-hybrid-final-v2";
+
+const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./icon.svg"
 ];
 
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open(C)
-      .then(cache => cache.addAll(A))
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(cache => cache.addAll(ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("activate", e => {
-  e.waitUntil(
+self.addEventListener("activate", event => {
+  event.waitUntil(
     caches.keys()
       .then(keys =>
         Promise.all(
           keys
-            .filter(key => key !== C)
+            .filter(key => key !== CACHE)
             .map(key => caches.delete(key))
         )
       )
@@ -28,19 +29,25 @@ self.addEventListener("activate", e => {
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    fetch(e.request)
+self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+
+  event.respondWith(
+    fetch(event.request)
       .then(response => {
         const copy = response.clone();
-        caches.open(C).then(cache => {
-          cache.put(e.request, copy);
+
+        caches.open(CACHE).then(cache => {
+          cache.put(event.request, copy);
         });
+
         return response;
       })
       .catch(() =>
-        caches.match(e.request)
-          .then(cached => cached || caches.match("./index.html"))
+        caches.match(event.request)
+          .then(cached =>
+            cached || caches.match("./index.html")
+          )
       )
   );
 });
