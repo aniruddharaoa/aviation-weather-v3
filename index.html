@@ -1371,19 +1371,38 @@ tabs=[
 ];
 
 
-/* CAPTURER CAMERA */
+/* Capturer gets guided camera */
 
 if(
-user.role === "CAPTURER"
+  user.role === "CAPTURER"
 ){
 
-tabs.push([
+  tabs.push([
 
-  "Camera",
+    "Camera",
+    renderGuidedCamera
 
-  renderGuidedCamera
+  ]);
 
-]);
+}
+
+
+/* Outstation Observer gets guided camera */
+
+if(
+  user.role === "OBSERVER"
+  &&
+  user.observerType === "OUTSTATION"
+){
+
+  tabs.push([
+
+    "Camera",
+    renderGuidedCamera
+
+  ]);
+
+}
 
 }
 
