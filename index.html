@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="utf-8">
 
 <meta
@@ -8,397 +9,357 @@
   content="width=device-width,initial-scale=1,viewport-fit=cover"
 >
 
-<meta name="theme-color" content="#07182c">
+<meta
+  name="theme-color"
+  content="#07182c"
+>
 
-<link rel="manifest" href="manifest.webmanifest">
+<link
+  rel="manifest"
+  href="manifest.webmanifest"
+>
 
-<title>AWO — Aviation Weather Operations</title>
-/* ==============================
-   GUIDED CAMERA
-================================ */
+<title>
+AWO — Aviation Weather Operations
+</title>
 
-.cameraShell{
-  position:relative;
-  width:100%;
-  max-width:700px;
-  margin:auto;
-  overflow:hidden;
-  border-radius:14px;
-  border:2px solid var(--line);
-  background:#000;
-}
 
-.cameraShell.align-red{
-  border-color:var(--red);
-}
-
-.cameraShell.align-yellow{
-  border-color:var(--amber);
-}
-
-.cameraShell.align-green{
-  border-color:var(--green);
-  box-shadow:0 0 18px rgba(0,255,100,.35);
-}
-
-#cameraVideo{
-  display:block;
-  width:100%;
-  min-height:420px;
-  object-fit:cover;
-  background:#000;
-}
-
-.cameraOverlay{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-
-.compassDial{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:230px;
-  height:230px;
-  border:3px solid var(--yellow);
-  border-radius:50%;
-  background:rgba(0,0,0,.15);
-}
-
-.compassDial::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-12px;
-  transform:translateX(-50%);
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-bottom:20px solid var(--yellow);
-}
-
-.compassCentre{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  background:var(--yellow);
-}
-
-.compassNorth{
-  position:absolute;
-  top:8px;
-  left:50%;
-  transform:translateX(-50%);
-  color:var(--yellow);
-  font-weight:900;
-}
-
-.compassSouth{
-  position:absolute;
-  bottom:8px;
-  left:50%;
-  transform:translateX(-50%);
-  color:white;
-  font-weight:800;
-}
-
-.compassEast{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  color:white;
-  font-weight:800;
-}
-
-.compassWest{
-  position:absolute;
-  left:10px;
-  top:50%;
-  transform:translateY(-50%);
-  color:white;
-  font-weight:800;
-}
-
-.cameraBearing{
-  position:absolute;
-  top:12px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(0,0,0,.72);
-  padding:8px 14px;
-  border-radius:20px;
-  color:var(--yellow);
-  font-size:22px;
-  font-weight:900;
-}
-
-.cameraGuidance{
-  position:absolute;
-  bottom:75px;
-  left:50%;
-  transform:translateX(-50%);
-  min-width:220px;
-  text-align:center;
-  background:rgba(0,0,0,.72);
-  padding:10px 15px;
-  border-radius:10px;
-  font-size:20px;
-  font-weight:900;
-}
-
-.cameraInfo{
-  position:absolute;
-  bottom:10px;
-  left:10px;
-  right:10px;
-  background:rgba(0,0,0,.72);
-  padding:8px;
-  border-radius:8px;
-  color:white;
-  font-size:12px;
-}
-
-.referenceMini{
-  width:100%;
-  max-height:220px;
-  object-fit:cover;
-  border-radius:10px;
-  border:1px solid var(--line);
-}
-
-.captureButton{
-  width:74px;
-  height:74px;
-  border-radius:50%;
-  border:6px solid white;
-  background:var(--red);
-  display:block;
-  margin:14px auto;
-}
-
-.captureButton.ready{
-  background:var(--green);
-}
-
-.cameraArrow{
-  font-size:30px;
-  color:var(--yellow);
-}
 <style>
 
 :root{
+
   --bg:#061527;
+
   --panel:#0b2746;
+
   --panel2:#103759;
+
+  --panel3:#081e36;
+
   --text:#f6f9fc;
+
   --muted:#afc0d1;
+
   --line:#315473;
 
   --yellow:#ffd21f;
+
   --blue:#2678d9;
+
   --green:#159447;
+
   --amber:#d4a10b;
+
   --red:#c83232;
+
   --purple:#8149aa;
+
   --grey:#65707c;
 
   --input:#061a2f;
+
 }
+
 
 *{
+
   box-sizing:border-box;
+
 }
 
+
 body{
+
   margin:0;
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
+
+  font-family:
+  Arial,
+  sans-serif;
+
+  background:
+  var(--bg);
+
+  color:
+  var(--text);
+
 }
+
 
 button,
 input,
 select,
 textarea{
+
   font:inherit;
+
 }
+
 
 button{
+
   cursor:pointer;
+
 }
+
 
 .hidden{
+
   display:none !important;
+
 }
+
 
 .small{
+
   font-size:12px;
-  color:var(--muted);
+
+  color:
+  var(--muted);
+
 }
+
 
 .center{
+
   text-align:center;
+
 }
 
 
-/* ==============================
-   TOP BAR
-================================ */
+/* =========================
+   HEADER
+========================= */
 
 header{
+
   position:sticky;
+
   top:0;
+
   z-index:30;
 
   display:flex;
-  justify-content:space-between;
+
+  justify-content:
+  space-between;
+
   align-items:center;
 
   gap:10px;
 
-  padding:10px 14px;
+  padding:
+  10px 14px;
 
-  background:var(--panel);
+  background:
+  var(--panel);
 
-  border-bottom:2px solid var(--yellow);
+  border-bottom:
+  2px solid
+  var(--yellow);
+
 }
+
 
 .brand{
-  color:var(--yellow);
+
+  color:
+  var(--yellow);
+
   font-weight:900;
+
 }
+
 
 .actions{
+
   display:flex;
+
   gap:7px;
+
   flex-wrap:wrap;
+
 }
 
 
-/* ==============================
+/* =========================
    BUTTONS
-================================ */
+========================= */
 
 .btn{
-  border:1px solid var(--line);
+
+  border:
+  1px solid
+  var(--line);
 
   border-radius:9px;
 
-  padding:10px 12px;
+  padding:
+  10px 12px;
 
-  background:var(--panel2);
-  color:var(--text);
+  background:
+  var(--panel2);
+
+  color:
+  var(--text);
 
   min-height:42px;
+
 }
 
+
 .btn.primary{
-  background:var(--blue);
-  border-color:var(--blue);
+
+  background:
+  var(--blue);
+
+  border-color:
+  var(--blue);
+
   color:white;
 
   font-weight:800;
+
 }
+
 
 .btn.success{
-  background:var(--green);
-  border-color:var(--green);
+
+  background:
+  var(--green);
+
+  border-color:
+  var(--green);
+
   color:white;
+
 }
+
 
 .btn.danger{
-  background:var(--red);
-  border-color:var(--red);
+
+  background:
+  var(--red);
+
+  border-color:
+  var(--red);
+
   color:white;
+
 }
 
-.btn.purple{
-  background:var(--purple);
-  border-color:var(--purple);
-  color:white;
-}
 
-
-/* ==============================
+/* =========================
    MAIN
-================================ */
+========================= */
 
 main{
+
   max-width:1280px;
+
   margin:auto;
+
   padding:12px;
+
 }
 
 
-/* ==============================
+/* =========================
    LOGIN
-================================ */
+========================= */
 
 .loginWrap{
+
   min-height:100vh;
 
   display:grid;
+
   place-items:center;
+
 }
 
+
 .loginCard{
-  width:min(440px,95vw);
 
-  background:var(--panel);
+  width:
+  min(
+    440px,
+    95vw
+  );
 
-  border:1px solid var(--line);
+  background:
+  var(--panel);
+
+  border:
+  1px solid
+  var(--line);
 
   border-radius:16px;
 
   padding:24px;
+
 }
 
+
 .logo{
+
   width:84px;
+
   height:84px;
 
-  border:3px solid var(--yellow);
+  border:
+  3px solid
+  var(--yellow);
+
   border-radius:50%;
 
   display:grid;
+
   place-items:center;
 
   margin:auto;
 
-  color:var(--yellow);
+  color:
+  var(--yellow);
 
   font-weight:900;
+
   font-size:24px;
+
 }
+
 
 .loginCard h1{
+
   text-align:center;
-  color:var(--yellow);
+
+  color:
+  var(--yellow);
 
   font-size:24px;
+
 }
 
 
-/* ==============================
-   FORM
-================================ */
+/* =========================
+   FORMS
+========================= */
 
 label{
+
   display:block;
 
-  color:var(--yellow);
+  color:
+  var(--yellow);
 
   font-size:12px;
+
   font-weight:800;
 
-  margin:10px 0 5px;
+  margin:
+  10px 0 5px;
+
 }
+
 
 input,
 select,
@@ -408,27 +369,36 @@ textarea{
 
   min-height:44px;
 
-  border:1px solid var(--line);
+  border:
+  1px solid
+  var(--line);
 
   border-radius:8px;
 
-  background:var(--input);
+  background:
+  var(--input);
 
-  color:var(--text);
+  color:
+  var(--text);
 
   padding:10px;
+
 }
+
 
 textarea{
+
   min-height:88px;
+
 }
 
 
-/* ==============================
+/* =========================
    NAVIGATION
-================================ */
+========================= */
 
 .nav{
+
   display:flex;
 
   gap:7px;
@@ -436,295 +406,849 @@ textarea{
   flex-wrap:wrap;
 
   margin-bottom:12px;
+
 }
+
 
 .nav .active{
-  border-color:var(--yellow);
-  color:var(--yellow);
+
+  border-color:
+  var(--yellow);
+
+  color:
+  var(--yellow);
+
 }
 
 
-/* ==============================
+/* =========================
    CARDS
-================================ */
+========================= */
 
 .card{
 
-  background:var(--panel);
+  background:
+  var(--panel);
 
-  border:1px solid var(--line);
+  border:
+  1px solid
+  var(--line);
 
   border-radius:13px;
 
   margin-bottom:12px;
 
   overflow:hidden;
+
 }
+
 
 .cardTitle{
 
-  padding:11px 13px;
+  padding:
+  11px 13px;
 
-  background:var(--panel2);
+  background:
+  var(--panel2);
 
-  color:var(--yellow);
+  color:
+  var(--yellow);
 
   font-weight:900;
+
 }
+
 
 .cardBody{
+
   padding:13px;
+
 }
 
 
-/* ==============================
+/* =========================
    GRIDS
-================================ */
+========================= */
 
 .grid{
+
   display:grid;
+
   gap:10px;
+
 }
+
 
 .g2{
+
   grid-template-columns:
-  repeat(2,minmax(0,1fr));
+  repeat(
+    2,
+    minmax(
+      0,
+      1fr
+    )
+  );
+
 }
+
 
 .g3{
+
   grid-template-columns:
-  repeat(3,minmax(0,1fr));
+  repeat(
+    3,
+    minmax(
+      0,
+      1fr
+    )
+  );
+
 }
+
 
 .g4{
+
   grid-template-columns:
-  repeat(4,minmax(0,1fr));
+  repeat(
+    4,
+    minmax(
+      0,
+      1fr
+    )
+  );
+
 }
 
 
-/* ==============================
-   DASHBOARD
-================================ */
+/* =========================
+   KPI
+========================= */
 
 .kpi{
 
-  background:#081e36;
+  background:
+  var(--panel3);
 
-  border:1px solid var(--line);
+  border:
+  1px solid
+  var(--line);
 
   border-radius:10px;
 
   padding:13px;
+
 }
+
 
 .kpi b{
 
   display:block;
 
-  color:var(--yellow);
+  color:
+  var(--yellow);
 
   font-size:25px;
 
   margin-top:5px;
+
 }
 
 
-/* ==============================
+/* =========================
    TABLE
-================================ */
+========================= */
 
 .tableWrap{
+
   overflow:auto;
+
 }
+
 
 table{
 
   width:100%;
 
-  border-collapse:collapse;
+  border-collapse:
+  collapse;
 
   min-width:760px;
+
 }
+
 
 th,
 td{
 
   padding:9px;
 
-  border:1px solid var(--line);
+  border:
+  1px solid
+  var(--line);
 
   font-size:12px;
 
   text-align:left;
+
 }
+
 
 th{
 
-  background:var(--panel2);
+  background:
+  var(--panel2);
 
-  color:var(--yellow);
+  color:
+  var(--yellow);
+
 }
 
 
-/* ==============================
-   WEATHER STATUS
-================================ */
+/* =========================
+   COLOURS
+========================= */
 
 .status{
 
   display:inline-block;
 
-  padding:5px 9px;
+  padding:
+  5px 9px;
 
   border-radius:999px;
 
   color:white;
 
   font-weight:800;
+
 }
+
 
 .GREEN{
-  background:var(--green);
+
+  background:
+  var(--green);
+
 }
+
 
 .YELLOW{
-  background:var(--amber);
+
+  background:
+  var(--amber);
+
   color:#07182c;
+
 }
+
 
 .RED{
-  background:var(--red);
+
+  background:
+  var(--red);
+
 }
+
 
 .PURPLE{
-  background:var(--purple);
+
+  background:
+  var(--purple);
+
 }
+
 
 .GREY{
-  background:var(--grey);
+
+  background:
+  var(--grey);
+
 }
 
 
-/* ==============================
+/* =========================
    PERSONNEL
-================================ */
+========================= */
 
 .person{
 
-  border:1px solid var(--line);
+  border:
+  1px solid
+  var(--line);
 
-  background:#081e36;
+  background:
+  var(--panel3);
 
   padding:10px;
 
   border-radius:8px;
 
-  margin:5px 0;
+  margin:
+  5px 0;
+
 }
 
+
 .person.active{
-  border-color:var(--yellow);
+
+  border-color:
+  var(--yellow);
+
 }
+
 
 .chipGrid{
 
   display:grid;
 
   grid-template-columns:
-  repeat(auto-fill,minmax(105px,1fr));
+  repeat(
+    auto-fill,
+    minmax(
+      105px,
+      1fr
+    )
+  );
 
   gap:7px;
+
 }
+
 
 .chip{
 
   padding:10px;
 
-  border:1px solid var(--line);
+  border:
+  1px solid
+  var(--line);
 
   border-radius:8px;
 
-  background:#081e36;
+  background:
+  var(--panel3);
 
-  color:var(--text);
+  color:
+  var(--text);
+
 }
+
 
 .chip.on{
 
-  background:var(--green);
+  background:
+  var(--green);
 
   color:white;
+
 }
 
-
-/* ==============================
-   HISTORY
-================================ */
 
 .history{
 
-  border-left:4px solid var(--yellow);
+  border-left:
+  4px solid
+  var(--yellow);
 
-  padding:9px 11px;
+  padding:
+  9px 11px;
 
-  background:#081e36;
+  background:
+  var(--panel3);
 
   border-radius:7px;
 
-  margin:7px 0;
+  margin:
+  7px 0;
+
 }
 
 
-/* ==============================
-   MOBILE
-================================ */
+/* =========================
+   GUIDED CAMERA
+========================= */
 
-@media(max-width:760px){
+.cameraShell{
+
+  position:relative;
+
+  width:100%;
+
+  max-width:700px;
+
+  margin:auto;
+
+  overflow:hidden;
+
+  border-radius:14px;
+
+  border:
+  2px solid
+  var(--line);
+
+  background:#000;
+
+}
+
+
+.cameraShell.align-red{
+
+  border-color:
+  var(--red);
+
+}
+
+
+.cameraShell.align-yellow{
+
+  border-color:
+  var(--amber);
+
+}
+
+
+.cameraShell.align-green{
+
+  border-color:
+  var(--green);
+
+  box-shadow:
+  0 0 18px
+  rgba(
+    0,
+    255,
+    100,
+    .35
+  );
+
+}
+
+
+#cameraVideo{
+
+  display:block;
+
+  width:100%;
+
+  min-height:420px;
+
+  object-fit:cover;
+
+  background:#000;
+
+}
+
+
+.cameraOverlay{
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+}
+
+
+.compassDial{
+
+  position:absolute;
+
+  left:50%;
+
+  top:50%;
+
+  transform:
+  translate(
+    -50%,
+    -50%
+  );
+
+  width:230px;
+
+  height:230px;
+
+  border:
+  3px solid
+  var(--yellow);
+
+  border-radius:50%;
+
+  background:
+  rgba(
+    0,
+    0,
+    0,
+    .15
+  );
+
+}
+
+
+.compassDial::before{
+
+  content:"";
+
+  position:absolute;
+
+  left:50%;
+
+  top:-12px;
+
+  transform:
+  translateX(
+    -50%
+  );
+
+  border-left:
+  10px solid
+  transparent;
+
+  border-right:
+  10px solid
+  transparent;
+
+  border-bottom:
+  20px solid
+  var(--yellow);
+
+}
+
+
+.compassCentre{
+
+  position:absolute;
+
+  left:50%;
+
+  top:50%;
+
+  transform:
+  translate(
+    -50%,
+    -50%
+  );
+
+  width:12px;
+
+  height:12px;
+
+  border-radius:50%;
+
+  background:
+  var(--yellow);
+
+}
+
+
+.compassNorth{
+
+  position:absolute;
+
+  top:8px;
+
+  left:50%;
+
+  transform:
+  translateX(
+    -50%
+  );
+
+  color:
+  var(--yellow);
+
+  font-weight:900;
+
+}
+
+
+.compassSouth{
+
+  position:absolute;
+
+  bottom:8px;
+
+  left:50%;
+
+  transform:
+  translateX(
+    -50%
+  );
+
+  color:white;
+
+  font-weight:800;
+
+}
+
+
+.compassEast{
+
+  position:absolute;
+
+  right:10px;
+
+  top:50%;
+
+  transform:
+  translateY(
+    -50%
+  );
+
+  color:white;
+
+  font-weight:800;
+
+}
+
+
+.compassWest{
+
+  position:absolute;
+
+  left:10px;
+
+  top:50%;
+
+  transform:
+  translateY(
+    -50%
+  );
+
+  color:white;
+
+  font-weight:800;
+
+}
+
+
+.cameraBearing{
+
+  position:absolute;
+
+  top:12px;
+
+  left:50%;
+
+  transform:
+  translateX(
+    -50%
+  );
+
+  background:
+  rgba(
+    0,
+    0,
+    0,
+    .72
+  );
+
+  padding:
+  8px 14px;
+
+  border-radius:20px;
+
+  color:
+  var(--yellow);
+
+  font-size:22px;
+
+  font-weight:900;
+
+}
+
+
+.cameraGuidance{
+
+  position:absolute;
+
+  bottom:75px;
+
+  left:50%;
+
+  transform:
+  translateX(
+    -50%
+  );
+
+  min-width:220px;
+
+  text-align:center;
+
+  background:
+  rgba(
+    0,
+    0,
+    0,
+    .72
+  );
+
+  padding:
+  10px 15px;
+
+  border-radius:10px;
+
+  font-size:20px;
+
+  font-weight:900;
+
+}
+
+
+.cameraInfo{
+
+  position:absolute;
+
+  bottom:10px;
+
+  left:10px;
+
+  right:10px;
+
+  background:
+  rgba(
+    0,
+    0,
+    0,
+    .72
+  );
+
+  padding:8px;
+
+  border-radius:8px;
+
+  color:white;
+
+  font-size:12px;
+
+}
+
+
+.referenceMini{
+
+  width:100%;
+
+  max-height:220px;
+
+  object-fit:cover;
+
+  border-radius:10px;
+
+  border:
+  1px solid
+  var(--line);
+
+}
+
+
+.captureButton{
+
+  width:74px;
+
+  height:74px;
+
+  border-radius:50%;
+
+  border:
+  6px solid
+  white;
+
+  background:
+  var(--red);
+
+  display:block;
+
+  margin:
+  14px auto;
+
+}
+
+
+.captureButton.ready{
+
+  background:
+  var(--green);
+
+}
+
+
+.cameraArrow{
+
+  font-size:30px;
+
+  color:
+  var(--yellow);
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(
+max-width:760px
+){
 
   .g2,
   .g3,
   .g4{
-    grid-template-columns:1fr;
+
+    grid-template-columns:
+    1fr;
+
   }
+
 
   .brand{
+
     font-size:14px;
+
   }
+
 
   main{
+
     padding:8px;
+
   }
 
+
   header{
-    align-items:flex-start;
+
+    align-items:
+    flex-start;
+
   }
+
 }
 
 </style>
+
 </head>
 
 
 <body>
 
 
-<!-- ============================
-     TOP HEADER
-============================= -->
-
 <header
-  id="header"
-  class="hidden"
+id="header"
+class="hidden"
 >
 
 <div>
 
 <div class="brand">
+
 AWO — AVIATION WEATHER OPERATIONS
+
 </div>
 
+
 <div
-  id="userLine"
-  class="small"
+id="userLine"
+class="small"
 ></div>
 
 </div>
@@ -733,10 +1257,12 @@ AWO — AVIATION WEATHER OPERATIONS
 <div class="actions">
 
 <button
-  class="btn danger"
-  id="logoutBtn"
+class="btn danger"
+id="logoutBtn"
 >
+
 LOGOUT
+
 </button>
 
 </div>
@@ -748,29 +1274,32 @@ LOGOUT
 <main>
 
 
-<!-- ============================
-     LOGIN PAGE
-============================= -->
-
 <section
-  id="login"
-  class="loginWrap"
+id="login"
+class="loginWrap"
 >
+
 
 <div class="loginCard">
 
 
 <div class="logo">
+
 AWO
+
 </div>
 
 
 <h1>
+
 AVIATION WEATHER OPERATIONS
+
 </h1>
 
 
-<div class="small center">
+<div
+class="small center"
+>
 
 Personal role-based weather,
 imagery and AIRREP platform
@@ -779,34 +1308,40 @@ imagery and AIRREP platform
 
 
 <label>
+
 User ID
+
 </label>
 
+
 <input
-  id="loginId"
-  autocomplete="username"
-  placeholder="ARAOA"
+id="loginId"
+autocomplete="username"
+placeholder="ARAOA"
 >
 
 
 <label>
+
 Password
+
 </label>
 
+
 <input
-  id="loginPass"
-  type="password"
-  autocomplete="current-password"
+id="loginPass"
+type="password"
+autocomplete="current-password"
 >
 
 
 <button
-  class="btn primary"
-  style="
-  width:100%;
-  margin-top:14px;
-  "
-  id="loginBtn"
+class="btn primary"
+style="
+width:100%;
+margin-top:14px;
+"
+id="loginBtn"
 >
 
 LOGIN
@@ -815,17 +1350,23 @@ LOGIN
 
 
 <p
-  id="loginError"
-  style="color:#ff7770"
+id="loginError"
+style="
+color:#ff7770
+"
 ></p>
 
 
-<div class="small center">
+<div
+class="small center"
+>
 
 Initial Administrator:
 
 <b>
+
 ARAOA / 00007
+
 </b>
 
 </div>
@@ -837,23 +1378,22 @@ ARAOA / 00007
 
 
 
-<!-- ============================
-     APPLICATION
-============================= -->
-
 <section
-  id="app"
-  class="hidden"
+id="app"
+class="hidden"
 >
 
-<div
-  id="nav"
-  class="nav"
-></div>
 
 <div
-  id="content"
+id="nav"
+class="nav"
 ></div>
+
+
+<div
+id="content"
+></div>
+
 
 </section>
 
@@ -861,17 +1401,19 @@ ARAOA / 00007
 </main>
 
 
+
 <script>
 
 "use strict";
 
 
-/* ==============================
+/* =========================
    DATABASE
-================================ */
+========================= */
 
 const DB_KEY =
 "AWO_HYBRID_DATABASE";
+
 
 const SESSION_KEY =
 "AWO_SESSION";
@@ -879,7 +1421,9 @@ const SESSION_KEY =
 
 const $ =
 id =>
-document.getElementById(id);
+document.getElementById(
+id
+);
 
 
 
@@ -887,25 +1431,25 @@ function createDatabase(){
 
 return {
 
-  users:{},
+users:{},
 
-  helipads:{},
+helipads:{},
 
-  observations:[],
+observations:[],
 
-  images:[],
+images:[],
 
-  airreps:[],
+airreps:[],
 
-  tasks:[],
+tasks:[],
 
-  messages:[],
+messages:[],
 
-  audit:[],
+audit:[],
 
-  requests:[],
+requests:[],
 
-  aviatorPrefs:{}
+aviatorPrefs:{}
 
 };
 
@@ -913,19 +1457,27 @@ return {
 
 
 
-function readJSON(value){
+function readJSON(
+value
+){
 
 try{
 
-  return value
-  ? JSON.parse(value)
-  : null;
+return value
+?
+JSON.parse(
+value
+)
+:
+null;
 
 }
 
-catch(error){
+catch(
+error
+){
 
-  return null;
+return null;
 
 }
 
@@ -934,30 +1486,48 @@ catch(error){
 
 
 let db =
+
 readJSON(
-localStorage.getItem(DB_KEY)
+
+localStorage.getItem(
+DB_KEY
+)
+
 );
 
 
-if(!db){
 
-  db =
-  createDatabase();
+if(
+!db
+){
+
+db =
+createDatabase();
 
 }
 
 
-/* Ensure database sections exist */
 
-if(!db.users)
+if(
+!db.users
+){
+
 db.users={};
 
-if(!db.helipads)
+}
+
+
+if(
+!db.helipads
+){
+
 db.helipads={};
 
+}
 
-const arrays=[
 
+
+[
 "observations",
 "images",
 "airreps",
@@ -965,32 +1535,39 @@ const arrays=[
 "messages",
 "audit",
 "requests"
+]
 
-];
+.forEach(
+key=>{
 
+if(
+!Array.isArray(
+db[key]
+)
+){
 
-arrays.forEach(key=>{
-
-if(!Array.isArray(db[key])){
-
-  db[key]=[];
-
-}
-
-});
-
-
-if(!db.aviatorPrefs){
-
-  db.aviatorPrefs={};
+db[key]=[];
 
 }
 
+}
+);
 
 
-/* ==============================
+
+if(
+!db.aviatorPrefs
+){
+
+db.aviatorPrefs={};
+
+}
+
+
+
+/* =========================
    PRIMARY ADMINISTRATOR
-================================ */
+========================= */
 
 const existingAdmin =
 db.users.ARAOA || {};
@@ -998,26 +1575,28 @@ db.users.ARAOA || {};
 
 db.users.ARAOA={
 
-  ...existingAdmin,
+...existingAdmin,
 
-  id:"ARAOA",
+id:"ARAOA",
 
-  password:"00007",
+password:"00007",
 
-  role:"ADMIN",
+role:"ADMIN",
 
-  observerType:null,
+observerType:null,
 
-  active:true,
+active:true,
 
-  primary:true,
+primary:true,
 
-  helipads:
-  Array.isArray(
-    existingAdmin.helipads
-  )
-  ? existingAdmin.helipads
-  : []
+helipads:
+Array.isArray(
+existingAdmin.helipads
+)
+?
+existingAdmin.helipads
+:
+[]
 
 };
 
@@ -1027,9 +1606,11 @@ function saveDatabase(){
 
 localStorage.setItem(
 
-  DB_KEY,
+DB_KEY,
 
-  JSON.stringify(db)
+JSON.stringify(
+db
+)
 
 );
 
@@ -1040,35 +1621,34 @@ saveDatabase();
 
 
 
-/* ==============================
-   CURRENT USER
-================================ */
-
 function currentUser(){
 
 const id =
+
 localStorage.getItem(
 SESSION_KEY
 );
 
-if(
-  id &&
-  db.users[id]
-){
 
-  return db.users[id];
+return (
+
+id
+&&
+db.users[id]
+
+)
+
+?
+
+db.users[id]
+
+:
+
+null;
 
 }
 
-return null;
 
-}
-
-
-
-/* ==============================
-   AUDIT
-================================ */
 
 function addAudit(
 action,
@@ -1081,18 +1661,20 @@ currentUser();
 
 db.audit.unshift({
 
-  time:
-  new Date()
-  .toISOString(),
+time:
+new Date()
+.toISOString(),
 
-  user:
-  user
-  ? user.id
-  : "SYSTEM",
+user:
+user
+?
+user.id
+:
+"SYSTEM",
 
-  action,
+action,
 
-  detail
+detail
 
 });
 
@@ -1103,11 +1685,9 @@ saveDatabase();
 
 
 
-/* ==============================
-   SAFE TEXT
-================================ */
-
-function safe(value){
+function safe(
+value
+){
 
 return String(
 value ?? ""
@@ -1137,9 +1717,9 @@ value ?? ""
 
 
 
-/* ==============================
+/* =========================
    LOGIN
-================================ */
+========================= */
 
 function login(){
 
@@ -1163,22 +1743,32 @@ db.users[id];
 
 if(
 
-  !user ||
+!user
 
-  user.active === false ||
+||
 
-  String(user.password)
-  !==
-  String(password)
+user.active === false
+
+||
+
+String(
+user.password
+)
+!==
+
+String(
+password
+)
 
 ){
 
-  $("loginError")
-  .textContent =
+$("loginError")
+.textContent =
 
-  "Invalid User ID or password.";
+"Invalid User ID or password.";
 
-  return;
+
+return;
 
 }
 
@@ -1189,18 +1779,18 @@ $("loginError")
 
 localStorage.setItem(
 
-  SESSION_KEY,
+SESSION_KEY,
 
-  id
+id
 
 );
 
 
 addAudit(
 
-  "LOGIN",
+"LOGIN",
 
-  "User logged in"
+"User logged in"
 
 );
 
@@ -1211,21 +1801,19 @@ route();
 
 
 
-/* ==============================
-   LOGOUT
-================================ */
-
 function logout(){
 
-if(currentUser()){
+if(
+currentUser()
+){
 
-  addAudit(
+addAudit(
 
-    "LOGOUT",
+"LOGOUT",
 
-    "User logged out"
+"User logged out"
 
-  );
+);
 
 }
 
@@ -1241,9 +1829,9 @@ route();
 
 
 
-/* ==============================
-   ROUTER
-================================ */
+/* =========================
+   ROUTING
+========================= */
 
 function route(){
 
@@ -1251,56 +1839,79 @@ const user =
 currentUser();
 
 
-if(!user){
+if(
+!user
+){
 
-  $("login")
-  .classList
-  .remove("hidden");
-
-
-  $("app")
-  .classList
-  .add("hidden");
-
-
-  $("header")
-  .classList
-  .add("hidden");
+$("login")
+.classList
+.remove(
+"hidden"
+);
 
 
-  return;
+$("app")
+.classList
+.add(
+"hidden"
+);
+
+
+$("header")
+.classList
+.add(
+"hidden"
+);
+
+
+return;
 
 }
 
 
 $("login")
 .classList
-.add("hidden");
+.add(
+"hidden"
+);
 
 
 $("app")
 .classList
-.remove("hidden");
+.remove(
+"hidden"
+);
 
 
 $("header")
 .classList
-.remove("hidden");
+.remove(
+"hidden"
+);
 
 
 $("userLine")
 .textContent =
 
-user.id +
-" • " +
-user.role +
+user.id
+
++
+
+" • "
+
++
+
+user.role
+
++
+
 (
-  user.observerType
-  ?
-  " / " +
-  user.observerType
-  :
-  ""
+user.observerType
+?
+" / " +
+user.observerType
+:
+""
 );
 
 
@@ -1312,9 +1923,9 @@ user
 
 
 
-/* ==============================
+/* =========================
    NAVIGATION
-================================ */
+========================= */
 
 function buildNavigation(
 user
@@ -1324,106 +1935,86 @@ let tabs=[];
 
 
 if(
-user.role === "ADMIN"
+user.role ===
+"ADMIN"
 ){
 
 tabs=[
 
-  [
-    "Dashboard",
-    renderAdminDashboard
-  ],
+[
+"Dashboard",
+renderAdminDashboard
+],
 
-  [
-    "Helipads",
-    renderHelipads
-  ],
+[
+"Helipads",
+renderHelipads
+],
 
-  [
-    "Users",
-    renderUsers
-  ],
+[
+"Users",
+renderUsers
+],
 
-  [
-    "Schedules",
-    renderSchedules
-  ],
+[
+"Schedules",
+renderSchedules
+],
 
-  [
-    "Records",
-    renderRecords
-  ]
+[
+"Records",
+renderRecords
+]
 
 ];
 
 }
-
 
 else{
 
 tabs=[
 
-  [
-    "Home",
-    renderRoleHome
-  ]
+[
+"Home",
+renderRoleHome
+]
 
 ];
 
 
-/* Capturer gets guided camera */
-
 if(
-  user.role === "CAPTURER"
+user.role ===
+"CAPTURER"
 ){
 
-  tabs.push([
+tabs.push([
 
-    "Camera",
-    renderGuidedCamera
+"Camera",
 
-  ]);
+renderGuidedCamera
 
-}
-
-
-/* Outstation Observer gets guided camera */
-
-if(
-  user.role === "OBSERVER"
-  &&
-  user.observerType === "OUTSTATION"
-){
-
-  tabs.push([
-
-    "Camera",
-    renderGuidedCamera
-
-  ]);
+]);
 
 }
 
-}
-
-
-/* OUTSTATION OBSERVER CAMERA */
 
 if(
 
-user.role === "OBSERVER"
+user.role ===
+"OBSERVER"
 
 &&
 
-user.observerType === "OUTSTATION"
+user.observerType ===
+"OUTSTATION"
 
 ){
 
 tabs.push([
 
-  "Camera",
+"Camera",
 
-  renderGuidedCamera
+renderGuidedCamera
 
 ]);
 
@@ -1440,9 +2031,13 @@ nav.innerHTML="";
 
 
 tabs.forEach(
-(tab,index)=>{
+(
+tab,
+index
+)=>{
 
 const button =
+
 document.createElement(
 "button"
 );
@@ -1450,9 +2045,12 @@ document.createElement(
 
 button.className =
 
-"btn" +
+"btn"
+
++
+
 (
-index===0
+index === 0
 ?
 " active"
 :
@@ -1466,18 +2064,25 @@ tab[0];
 
 button.onclick=()=>{
 
-[...nav.children]
+[
+...nav.children
+]
+
 .forEach(
 element =>
 element
 .classList
-.remove("active")
+.remove(
+"active"
+)
 );
 
 
 button
 .classList
-.add("active");
+.add(
+"active"
+);
 
 
 tab[1]();
@@ -1489,27 +2094,35 @@ nav.appendChild(
 button
 );
 
-});
+}
+);
 
 
-if(tabs[0]){
+if(
+tabs[0]
+){
 
 tabs[0][1]();
 
 }
 
 }
-  /* ==============================
+
+
+
+/* =========================
    HELIPAD STATUS
-================================ */
+========================= */
 
 function getHelipadStatus(
 helipad
 ){
 
-if(!helipad){
+if(
+!helipad
+){
 
-  return "GREY";
+return "GREY";
 
 }
 
@@ -1521,14 +2134,21 @@ db.observations
 .filter(
 item =>
 
-item.helipad === helipad.id ||
+item.helipad ===
+helipad.id
 
-item.helipadId === helipad.id
+||
+
+item.helipadId ===
+helipad.id
 
 )
 
 .sort(
-(a,b)=>
+(
+a,
+b
+)=>
 
 new Date(
 b.time ||
@@ -1556,27 +2176,39 @@ const image =
 db.images.find(
 item =>
 
-item.helipad === helipad.id ||
+item.helipad ===
+helipad.id
 
-item.helipadId === helipad.id
+||
+
+item.helipadId ===
+helipad.id
 
 );
 
 
-if(!latest){
+if(
+!latest
+){
 
-  return image
-  ? "PURPLE"
-  : "GREY";
+return image
+?
+"PURPLE"
+:
+"GREY";
 
 }
 
 
 return (
 
-latest.systemColour ||
+latest.systemColour
 
-latest.observerColour ||
+||
+
+latest.observerColour
+
+||
 
 "GREEN"
 
@@ -1586,9 +2218,9 @@ latest.observerColour ||
 
 
 
-/* ==============================
+/* =========================
    ADMIN DASHBOARD
-================================ */
+========================= */
 
 function renderAdminDashboard(){
 
@@ -1630,20 +2262,23 @@ helipads.forEach(
 helipad=>{
 
 const status =
+
 getHelipadStatus(
 helipad
 );
 
 
 if(
-counts[status] !== undefined
+counts[status] !==
+undefined
 ){
 
 counts[status]++;
 
 }
 
-});
+}
+);
 
 
 $("content")
@@ -1658,7 +2293,9 @@ $("content")
 HELIPADS
 
 <b>
+
 ${helipads.length}
+
 </b>
 
 </div>
@@ -1669,7 +2306,9 @@ ${helipads.length}
 ACTIVE USERS
 
 <b>
+
 ${activeUsers.length}
+
 </b>
 
 </div>
@@ -1680,7 +2319,9 @@ ${activeUsers.length}
 OBSERVATIONS
 
 <b>
+
 ${db.observations.length}
+
 </b>
 
 </div>
@@ -1691,7 +2332,9 @@ ${db.observations.length}
 IMAGES
 
 <b>
+
 ${db.images.length}
+
 </b>
 
 </div>
@@ -1702,6 +2345,7 @@ ${db.images.length}
 
 
 <div class="card">
+
 
 <div class="cardTitle">
 
@@ -1712,65 +2356,77 @@ CURRENT WEATHER STATUS
 
 <div class="cardBody">
 
+
 <div class="grid g4">
 
 
-<div class="kpi">
+<div class="kpi GREEN">
 
 GREEN
 
 <b>
+
 ${counts.GREEN}
+
 </b>
 
 </div>
 
 
-<div class="kpi">
+<div class="kpi YELLOW">
 
 YELLOW
 
 <b>
+
 ${counts.YELLOW}
+
 </b>
 
 </div>
 
 
-<div class="kpi">
+<div class="kpi RED">
 
 RED
 
 <b>
+
 ${counts.RED}
+
 </b>
 
 </div>
 
 
-<div class="kpi">
+<div class="kpi PURPLE">
 
 PURPLE
 
 <b>
+
 ${counts.PURPLE}
+
 </b>
 
 </div>
 
 
-<div class="kpi">
+<div class="kpi GREY">
 
 GREY
 
 <b>
+
 ${counts.GREY}
+
 </b>
 
 </div>
 
 
 </div>
+
 
 </div>
 
@@ -1779,6 +2435,7 @@ ${counts.GREY}
 
 
 <div class="card">
+
 
 <div class="cardTitle">
 
@@ -1824,6 +2481,7 @@ helipads.map(
 helipad=>{
 
 const status =
+
 getHelipadStatus(
 helipad
 );
@@ -1836,13 +2494,14 @@ return `
 <td>
 
 <b>
+
 ${safe(
 helipad.id
 )}
+
 </b>
 
 </td>
-
 
 <td>
 
@@ -1856,7 +2515,6 @@ ${status}
 
 </td>
 
-
 <td>
 
 ${safe(
@@ -1866,7 +2524,6 @@ helipad.mode ||
 
 </td>
 
-
 <td>
 
 ${safe(
@@ -1875,7 +2532,6 @@ helipad.views ||
 )}
 
 </td>
-
 
 <td>
 
@@ -1915,9 +2571,9 @@ helipad.active === false
 
 
 
-/* ==============================
+/* =========================
    HELIPAD MANAGEMENT
-================================ */
+========================= */
 
 function renderHelipads(){
 
@@ -1945,8 +2601,11 @@ CREATE / UPDATE HELIPAD
 
 
 <label>
+
 Helipad Name / ID
+
 </label>
+
 
 <input
 id="helipadName"
@@ -1955,17 +2614,21 @@ placeholder="Example: HLP01"
 
 
 <label>
+
 Operating Mode
+
 </label>
 
 
 <select id="helipadMode">
+
 
 <option value="OUTSTATION">
 
 Outstation Observer
 
 </option>
+
 
 <option value="CAP_IN">
 
@@ -1974,31 +2637,39 @@ Instation Observer
 
 </option>
 
+
 </select>
 
 
 <label>
+
 Number of Views
+
 </label>
 
 
 <select id="helipadViews">
 
+
 <option>
 1
 </option>
+
 
 <option>
 2
 </option>
 
+
 <option>
 3
 </option>
 
+
 <option selected>
 4
 </option>
+
 
 </select>
 
@@ -2011,8 +2682,10 @@ Number of Views
 
 
 <label>
+
 Weather Validity
 (minutes)
+
 </label>
 
 
@@ -2024,26 +2697,33 @@ value="30"
 
 
 <label>
+
 Automatic Colour Coding
+
 </label>
 
 
 <select id="autoColour">
 
+
 <option value="ON">
 ON
 </option>
+
 
 <option value="OFF">
 OFF
 </option>
 
+
 </select>
 
 
 <label>
+
 RED below visibility
 (m)
+
 </label>
 
 
@@ -2055,8 +2735,10 @@ value="1000"
 
 
 <label>
+
 YELLOW below visibility
 (m)
+
 </label>
 
 
@@ -2157,9 +2839,11 @@ return `
 <td>
 
 <b>
+
 ${safe(
 helipad.id
 )}
+
 </b>
 
 </td>
@@ -2199,6 +2883,7 @@ helipad.views ||
 
 <td>
 
+
 <button
 class="btn"
 data-edit-helipad="${safe(
@@ -2207,6 +2892,18 @@ helipad.id
 >
 
 EDIT
+
+</button>
+
+
+<button
+class="btn primary"
+data-ref-helipad="${safe(
+helipad.id
+)}"
+>
+
+REFERENCE IMAGES
 
 </button>
 
@@ -2229,6 +2926,7 @@ helipad.active === false
 }
 
 </button>
+
 
 </td>
 
@@ -2254,4266 +2952,11 @@ helipad.active === false
 `;
 
 
-/* Save helipad */
-
-
 $("saveHelipadButton")
 .onclick =
 saveHelipad;
 
 
-/* Edit existing helipad */
-
-
 $("content")
 
-.querySelectorAll(
-"[data-edit-helipad]"
-)
-
-.forEach(
-button=>{
-
-button.onclick=()=>{
-
-loadHelipadForEditing(
-button.dataset.editHelipad
-);
-
-};
-
-});
-
-
-/* Archive / restore */
-
-
-$("content")
-
-.querySelectorAll(
-"[data-toggle-helipad]"
-)
-
-.forEach(
-button=>{
-
-button.onclick=()=>{
-
-const id =
-button.dataset.toggleHelipad;
-
-
-const helipad =
-db.helipads[id];
-
-
-if(!helipad)
-return;
-
-
-helipad.active =
-helipad.active === false;
-
-
-saveDatabase();
-
-
-addAudit(
-
-"HELIPAD STATUS",
-
-id +
-" → " +
-(
-helipad.active
-?
-"ACTIVE"
-:
-"ARCHIVED"
-)
-
-);
-
-
-renderHelipads();
-
-};
-
-});
-
-}
-
-
-
-/* ==============================
-   SAVE HELIPAD
-================================ */
-
-function saveHelipad(){
-
-const id =
-
-$("helipadName")
-.value
-.trim()
-.toUpperCase();
-
-
-if(!id){
-
-alert(
-"Enter a helipad name or ID."
-);
-
-return;
-
-}
-
-
-const views =
-
-Number(
-$("helipadViews")
-.value
-);
-
-
-const old =
-db.helipads[id] || {};
-
-
-let viewConfig =
-
-Array.isArray(
-old.viewConfig
-)
-
-?
-old.viewConfig.slice(
-0,
-views
-)
-
-:
-[];
-
-
-/* Create missing views */
-
-while(
-viewConfig.length < views
-){
-
-const index =
-viewConfig.length;
-
-
-viewConfig.push({
-
-id:
-"V" +
-(index+1),
-
-label:
-"VIEW " +
-(index+1),
-
-bearing:
-(index*90)%360,
-
-tolerance:
-10,
-
-reference:null
-
-});
-
-}
-
-
-db.helipads[id]={
-
-...old,
-
-id,
-
-active:true,
-
-mode:
-$("helipadMode")
-.value,
-
-views,
-
-validity:
-Number(
-$("weatherValidity")
-.value
-)
-||30,
-
-autoColour:
-$("autoColour")
-.value,
-
-redVis:
-Number(
-$("redVisibility")
-.value
-)
-||1000,
-
-yellowVis:
-Number(
-$("yellowVisibility")
-.value
-)
-||3000,
-
-viewConfig
-
-};
-
-
-saveDatabase();
-
-
-addAudit(
-
-"SAVE HELIPAD",
-
-id
-
-);
-
-
-alert(
-"Helipad saved successfully."
-);
-
-
-renderHelipads();
-
-}
-
-
-
-/* ==============================
-   LOAD HELIPAD FOR EDITING
-================================ */
-function renderHelipads(){
-
-$("content").innerHTML = `
-
-<div class="card">
-
-  <div class="cardTitle">
-    CREATE / UPDATE HELIPAD
-  </div>
-
-  <div class="cardBody">
-
-    <div class="grid g2">
-
-      <div>
-
-        <label>
-          Helipad Name / ID
-        </label>
-
-        <input
-          id="helipadName"
-          placeholder="Example: HLP01"
-        >
-
-
-        <label>
-          Operating Mode
-        </label>
-
-        <select id="helipadMode">
-
-          <option value="OUTSTATION">
-            Outstation Observer
-          </option>
-
-          <option value="CAP_IN">
-            Capturer + Instation Observer
-          </option>
-
-        </select>
-
-
-        <label>
-          Number of Views
-        </label>
-
-        <select id="helipadViews">
-
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option selected>4</option>
-
-        </select>
-
-      </div>
-
-
-      <div>
-
-        <label>
-          Weather Validity (minutes)
-        </label>
-
-        <input
-          id="weatherValidity"
-          type="number"
-          value="30"
-        >
-
-
-        <label>
-          Automatic Colour Coding
-        </label>
-
-        <select id="autoColour">
-
-          <option value="ON">
-            ON
-          </option>
-
-          <option value="OFF">
-            OFF
-          </option>
-
-        </select>
-
-
-        <label>
-          RED below visibility (m)
-        </label>
-
-        <input
-          id="redVisibility"
-          type="number"
-          value="1000"
-        >
-
-
-        <label>
-          YELLOW below visibility (m)
-        </label>
-
-        <input
-          id="yellowVisibility"
-          type="number"
-          value="3000"
-        >
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      id="saveHelipadButton"
-      style="
-        width:100%;
-        margin-top:15px;
-      "
-    >
-      SAVE HELIPAD
-    </button>
-
-  </div>
-
-</div>
-
-
-
-<div class="card">
-
-  <div class="cardTitle">
-    EXISTING HELIPADS
-  </div>
-
-  <div class="cardBody tableWrap">
-
-    <table>
-
-      <tr>
-
-        <th>
-          HELIPAD
-        </th>
-
-        <th>
-          MODE
-        </th>
-
-        <th>
-          STATUS
-        </th>
-
-        <th>
-          VIEWS
-        </th>
-
-        <th>
-          ACTION
-        </th>
-
-      </tr>
-
-
-      ${
-
-        Object.values(
-          db.helipads
-        )
-
-        .map(
-          helipad=>{
-
-            const status =
-            getHelipadStatus(
-              helipad
-            );
-
-
-            return `
-
-            <tr>
-
-              <td>
-                <b>
-                  ${safe(helipad.id)}
-                </b>
-              </td>
-
-
-              <td>
-                ${safe(helipad.mode)}
-              </td>
-
-
-              <td>
-
-                <span
-                  class="status ${status}"
-                >
-                  ${status}
-                </span>
-
-              </td>
-
-
-              <td>
-                ${safe(helipad.views || 4)}
-              </td>
-
-
-              <td>
-
-                <button
-                  class="btn"
-                  data-edit-helipad="${safe(helipad.id)}"
-                >
-                  EDIT
-                </button>
-
-
-                <button
-                  class="btn primary"
-                  data-ref-helipad="${safe(helipad.id)}"
-                >
-                  REFERENCE IMAGES
-                </button>
-
-
-                <button
-                  class="btn danger"
-                  data-toggle-helipad="${safe(helipad.id)}"
-                >
-
-                  ${
-                    helipad.active === false
-                    ?
-                    "RESTORE"
-                    :
-                    "ARCHIVE"
-                  }
-
-                </button>
-
-              </td>
-
-            </tr>
-
-            `;
-
-          }
-
-        ).join("")
-
-      }
-
-    </table>
-
-  </div>
-
-</div>
-
-`;
-
-
-/* Save helipad */
-
-$("saveHelipadButton")
-.onclick =
-saveHelipad;
-
-
-/* Edit */
-
-$("content")
-
-.querySelectorAll(
-  "[data-edit-helipad]"
-)
-
-.forEach(
-  button=>{
-
-    button.onclick=()=>{
-
-      loadHelipadForEditing(
-        button.dataset.editHelipad
-      );
-
-    };
-
-  }
-);
-
-
-/* Reference images */
-
-$("content")
-
-.querySelectorAll(
-  "[data-ref-helipad]"
-)
-
-.forEach(
-  button=>{
-
-    button.onclick=()=>{
-
-      openReferenceSettings(
-        button.dataset.refHelipad
-      );
-
-    };
-
-  }
-);
-
-
-/* Archive / Restore */
-
-$("content")
-
-.querySelectorAll(
-  "[data-toggle-helipad]"
-)
-
-.forEach(
-  button=>{
-
-    button.onclick=()=>{
-
-      const id =
-      button.dataset.toggleHelipad;
-
-
-      const helipad =
-      db.helipads[id];
-
-
-      if(!helipad)
-      return;
-
-
-      helipad.active =
-      helipad.active === false;
-
-
-      saveDatabase();
-
-
-      addAudit(
-
-        "HELIPAD STATUS",
-
-        id +
-        " → " +
-        (
-          helipad.active
-          ?
-          "ACTIVE"
-          :
-          "ARCHIVED"
-        )
-
-      );
-
-
-      renderHelipads();
-
-    };
-
-  }
-);
-
-}
-
-/* ==============================
-   REFERENCE IMAGE SETTINGS
-================================ */
-
-function openReferenceSettings(
-id
-){
-
-const helipad =
-db.helipads[id];
-
-
-if(!helipad)
-return;
-
-
-/* Ensure view configuration exists */
-
-if(
-!Array.isArray(
-helipad.viewConfig
-)
-){
-
-helipad.viewConfig =
-
-Array.from(
-
-{
-  length:
-  Number(
-    helipad.views ||
-    4
-  )
-},
-
-(_,index)=>({
-
-  id:
-  "V" +
-  (index+1),
-
-  label:
-  "VIEW " +
-  (index+1),
-
-  bearing:
-  (index*90)%360,
-
-  tolerance:
-  10,
-
-  reference:null
-
-})
-
-);
-
-}
-
-
-$("content")
-.innerHTML = `
-
-
-<button
-class="btn"
-id="backToHelipads"
-style="margin-bottom:10px"
->
-← BACK TO HELIPADS
-</button>
-
-
-<div class="card">
-
-  <div class="cardTitle">
-
-    ${safe(id)}
-    —
-    REFERENCE IMAGES & RADIAL SETTINGS
-
-  </div>
-
-
-  <div class="cardBody">
-
-
-    <div class="small">
-
-      Configure each required view.
-      The bearing and tolerance will
-      later guide Capturer and Outstation
-      Observer inside the live camera.
-
-    </div>
-
-
-    ${
-
-      helipad.viewConfig
-
-      .map(
-        (
-          view,
-          index
-        )=>`
-
-        <div class="history">
-
-
-          <h3>
-
-            VIEW
-            ${index+1}
-
-          </h3>
-
-
-          <label>
-            View Name
-          </label>
-
-          <input
-            id="viewName${index}"
-            value="${safe(view.label)}"
-          >
-
-
-          <label>
-            Target Bearing (°)
-          </label>
-
-          <input
-            id="viewBearing${index}"
-            type="number"
-            min="0"
-            max="359"
-            value="${Number(view.bearing)}"
-          >
-
-
-          <label>
-            Allowed Tolerance ±°
-          </label>
-
-          <input
-            id="viewTolerance${index}"
-            type="number"
-            min="0"
-            max="45"
-            value="${Number(view.tolerance)}"
-          >
-
-
-          <label>
-            Reference Image
-          </label>
-
-          <input
-            type="file"
-            accept="image/*"
-            data-reference-index="${index}"
-          >
-
-
-          <div
-            id="referencePreview${index}"
-            style="margin-top:10px"
-          >
-
-            ${
-              view.reference
-
-              ?
-
-              `
-
-              <img
-                src="${view.reference}"
-                style="
-                  width:100%;
-                  max-width:420px;
-                  border-radius:10px;
-                  border:1px solid var(--line);
-                "
-              >
-
-              <br>
-
-              <button
-                class="btn danger"
-                style="margin-top:8px"
-                data-remove-reference="${index}"
-              >
-                REMOVE IMAGE
-              </button>
-
-              `
-
-              :
-
-              `
-
-              <div class="small">
-
-                No reference image uploaded.
-
-              </div>
-
-              `
-
-            }
-
-          </div>
-
-
-        </div>
-
-        `
-
-      ).join("")
-
-    }
-
-
-    <button
-      class="btn success"
-      id="saveReferenceSettings"
-      style="
-        width:100%;
-        margin-top:15px;
-      "
-    >
-      SAVE ALL VIEW SETTINGS
-    </button>
-
-
-  </div>
-
-</div>
-
-`;
-
-
-/* Back */
-
-$("backToHelipads")
-.onclick =
-renderHelipads;
-
-
-/* Upload reference images */
-
-$("content")
-
-.querySelectorAll(
-"[data-reference-index]"
-)
-
-.forEach(
-input=>{
-
-input.onchange=()=>{
-
-const index =
-Number(
-input.dataset.referenceIndex
-);
-
-
-const file =
-input.files[0];
-
-
-if(!file)
-return;
-
-
-const reader =
-new FileReader();
-
-
-reader.onload=()=>{
-
-helipad
-.viewConfig[index]
-.reference =
-reader.result;
-
-
-saveDatabase();
-
-
-addAudit(
-
-"REFERENCE IMAGE",
-
-id +
-" / VIEW " +
-(index+1) +
-" UPLOADED"
-
-);
-
-
-openReferenceSettings(
-id
-);
-
-};
-
-
-reader.readAsDataURL(
-file
-);
-
-};
-
-});
-
-
-/* Remove reference */
-
-$("content")
-
-.querySelectorAll(
-"[data-remove-reference]"
-)
-
-.forEach(
-button=>{
-
-button.onclick=()=>{
-
-const index =
-Number(
-button.dataset.removeReference
-);
-
-
-helipad
-.viewConfig[index]
-.reference =
-null;
-
-
-saveDatabase();
-
-
-addAudit(
-
-"REFERENCE IMAGE",
-
-id +
-" / VIEW " +
-(index+1) +
-" REMOVED"
-
-);
-
-
-openReferenceSettings(
-id
-);
-
-};
-
-});
-
-
-/* Save settings */
-
-$("saveReferenceSettings")
-.onclick=()=>{
-
-helipad
-.viewConfig
-.forEach(
-(
-view,
-index
-)=>{
-
-view.label =
-
-$("viewName"+index)
-.value
-.trim()
-
-||
-
-"VIEW " +
-(index+1);
-
-
-view.bearing =
-
-(
-Number(
-$("viewBearing"+index)
-.value
-)
-
-%
-360
-
-+
-360
-
-)
-
-%
-360;
-
-
-view.tolerance =
-
-Math.max(
-
-0,
-
-Math.min(
-
-45,
-
-Number(
-$("viewTolerance"+index)
-.value
-)
-
-||
-
-0
-
-)
-
-);
-
-});
-
-
-saveDatabase();
-
-
-addAudit(
-
-"REFERENCE SETTINGS",
-
-id +
-" VIEW CONFIGURATION UPDATED"
-
-);
-
-
-alert(
-"Reference image and bearing settings saved."
-);
-
-
-renderHelipads();
-
-};
-
-}
-  /* ==============================
-   GUIDED CAMERA ENGINE
-================================ */
-
-let cameraStream = null;
-let cameraHeading = null;
-let cameraTarget = 0;
-let cameraTolerance = 10;
-let cameraHelipad = null;
-let cameraViewIndex = 0;
-let orientationHandler = null;
-
-
-/* ==============================
-   OPEN CAMERA PAGE
-================================ */
-
-function renderGuidedCamera(){
-
-const user =
-currentUser();
-
-
-const authorised =
-
-(user.helipads || [])
-
-.filter(
-id =>
-
-db.helipads[id]
-
-&&
-
-db.helipads[id].active !== false
-
-);
-
-
-if(!authorised.length){
-
-$("content").innerHTML = `
-
-<div class="card">
-
-  <div class="cardTitle">
-    CAMERA
-  </div>
-
-  <div class="cardBody">
-
-    No helipad has been assigned
-    to this user.
-
-  </div>
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-cameraHelipad =
-authorised[0];
-
-
-const helipad =
-db.helipads[cameraHelipad];
-
-
-if(
-!Array.isArray(
-helipad.viewConfig
-)
-
-||
-
-!helipad.viewConfig.length
-){
-
-$("content").innerHTML = `
-
-<div class="card">
-
-  <div class="cardTitle">
-    CAMERA
-  </div>
-
-  <div class="cardBody">
-
-    The Administrator has not configured
-    reference views for this helipad.
-
-  </div>
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-cameraViewIndex = 0;
-
-
-drawCameraPage();
-
-}
-
-
-/* ==============================
-   DRAW CAMERA PAGE
-================================ */
-
-function drawCameraPage(){
-
-stopCamera();
-
-
-const helipad =
-db.helipads[cameraHelipad];
-
-
-const views =
-helipad.viewConfig;
-
-
-const view =
-views[cameraViewIndex];
-
-
-cameraTarget =
-Number(
-view.bearing || 0
-);
-
-
-cameraTolerance =
-Number(
-view.tolerance || 10
-);
-
-
-$("content").innerHTML = `
-
-<div class="card">
-
-  <div class="cardTitle">
-
-    ${safe(cameraHelipad)}
-    —
-    GUIDED CAPTURE
-
-  </div>
-
-
-  <div class="cardBody">
-
-
-    <label>
-      Required View
-    </label>
-
-
-    <select id="cameraViewSelect">
-
-      ${
-
-        views.map(
-          (view,index)=>`
-
-          <option
-            value="${index}"
-            ${
-              index === cameraViewIndex
-              ?
-              "selected"
-              :
-              ""
-            }
-          >
-
-            ${safe(
-              view.label ||
-              ("VIEW "+(index+1))
-            )}
-
-            —
-
-            ${Number(
-              view.bearing || 0
-            )
-            .toString()
-            .padStart(3,"0")}°
-
-          </option>
-
-          `
-        ).join("")
-
-      }
-
-    </select>
-
-
-    <div
-      class="grid g2"
-      style="margin-top:12px"
-    >
-
-
-      <div>
-
-        <div class="small">
-          REFERENCE IMAGE
-        </div>
-
-
-        ${
-
-          view.reference
-
-          ?
-
-          `
-
-          <img
-            src="${view.reference}"
-            class="referenceMini"
-          >
-
-          `
-
-          :
-
-          `
-
-          <div class="history">
-
-            No reference image.
-
-            <br>
-
-            Use configured radial:
-
-            <b>
-              ${cameraTarget}°
-            </b>
-
-          </div>
-
-          `
-
-        }
-
-      </div>
-
-
-      <div>
-
-        <div class="small">
-          TARGET
-        </div>
-
-
-        <h2>
-
-          ${cameraTarget
-          .toString()
-          .padStart(3,"0")}°
-
-          ±
-          ${cameraTolerance}°
-
-        </h2>
-
-
-        <button
-          class="btn primary"
-          id="startCameraButton"
-          style="width:100%"
-        >
-
-          START CAMERA
-
-        </button>
-
-      </div>
-
-
-    </div>
-
-
-    <div
-      id="cameraShell"
-      class="cameraShell"
-      style="margin-top:15px"
-    >
-
-
-      <video
-        id="cameraVideo"
-        autoplay
-        playsinline
-        muted
-      ></video>
-
-
-      <div class="cameraOverlay">
-
-
-        <div
-          id="liveBearing"
-          class="cameraBearing"
-        >
-          ---°
-        </div>
-
-
-        <div
-          id="compassDial"
-          class="compassDial"
-        >
-
-
-          <div class="compassNorth">
-            N
-          </div>
-
-
-          <div class="compassEast">
-            E
-          </div>
-
-
-          <div class="compassSouth">
-            S
-          </div>
-
-
-          <div class="compassWest">
-            W
-          </div>
-
-
-          <div class="compassCentre">
-          </div>
-
-
-        </div>
-
-
-        <div
-          id="cameraGuidance"
-          class="cameraGuidance"
-        >
-
-          START CAMERA
-
-        </div>
-
-
-        <div
-          class="cameraInfo"
-        >
-
-          HELIPAD:
-
-          <b>
-            ${safe(cameraHelipad)}
-          </b>
-
-          &nbsp;
-
-          VIEW:
-
-          <b>
-            ${safe(view.label)}
-          </b>
-
-          <br>
-
-          TARGET:
-
-          <b>
-            ${cameraTarget}°
-          </b>
-
-          &nbsp;
-
-          TOLERANCE:
-
-          <b>
-            ±${cameraTolerance}°
-          </b>
-
-        </div>
-
-
-      </div>
-
-
-    </div>
-
-
-    <button
-      id="captureButton"
-      class="captureButton"
-      title="Capture"
-    ></button>
-
-
-    <div
-      id="cameraMessage"
-      class="small center"
-    >
-
-      Camera not started.
-
-    </div>
-
-
-    <canvas
-      id="captureCanvas"
-      class="hidden"
-    ></canvas>
-
-
-    <div
-      id="capturedPreview"
-      style="margin-top:15px"
-    ></div>
-
-
-  </div>
-
-</div>
-
-`;
-
-
-/* Change required view */
-
-$("cameraViewSelect")
-.onchange=()=>{
-
-cameraViewIndex =
-Number(
-$("cameraViewSelect")
-.value
-);
-
-
-drawCameraPage();
-
-};
-
-
-/* Start camera */
-
-$("startCameraButton")
-.onclick =
-startGuidedCamera;
-
-
-/* Capture */
-
-$("captureButton")
-.onclick =
-captureGuidedImage;
-
-}
-
-
-/* ==============================
-   START CAMERA
-================================ */
-
-async function startGuidedCamera(){
-
-try{
-
-stopCamera();
-
-
-cameraStream =
-
-await navigator
-.mediaDevices
-.getUserMedia({
-
-video:{
-
-  facingMode:{
-    ideal:"environment"
-  }
-
-},
-
-audio:false
-
-});
-
-
-const video =
-$("cameraVideo");
-
-
-video.srcObject =
-cameraStream;
-
-
-await video.play();
-
-
-$("cameraMessage")
-.textContent =
-
-"Camera active. Align with the target bearing.";
-
-
-await startCompass();
-
-}
-
-catch(error){
-
-$("cameraMessage")
-.textContent =
-
-"Camera access failed: " +
-error.message;
-
-}
-
-}
-
-
-/* ==============================
-   COMPASS
-================================ */
-
-async function startCompass(){
-
-if(
-
-typeof DeviceOrientationEvent !==
-"undefined"
-
-&&
-
-typeof DeviceOrientationEvent
-.requestPermission ===
-"function"
-
-){
-
-try{
-
-const permission =
-
-await DeviceOrientationEvent
-.requestPermission();
-
-
-if(
-permission !==
-"granted"
-){
-
-$("cameraMessage")
-.textContent =
-
-"Compass permission was not granted.";
-
-return;
-
-}
-
-}
-
-catch(error){
-
-console.log(
-"Compass permission error:",
-error
-);
-
-}
-
-}
-
-
-/* Remove previous listener */
-
-if(
-orientationHandler
-){
-
-window.removeEventListener(
-
-"deviceorientationabsolute",
-
-orientationHandler,
-
-true
-
-);
-
-
-window.removeEventListener(
-
-"deviceorientation",
-
-orientationHandler,
-
-true
-
-);
-
-}
-
-
-/* New listener */
-
-orientationHandler =
-event=>{
-
-let heading = null;
-
-
-/* iPhone */
-
-if(
-typeof event.webkitCompassHeading ===
-"number"
-){
-
-heading =
-event.webkitCompassHeading;
-
-}
-
-
-/* Android */
-
-else if(
-typeof event.alpha ===
-"number"
-){
-
-heading =
-360 -
-event.alpha;
-
-}
-
-
-if(
-heading === null
-)
-return;
-
-
-cameraHeading =
-
-(
-heading % 360 + 360
-)
-
-%360;
-
-
-updateCameraGuidance();
-
-};
-
-
-window.addEventListener(
-
-"deviceorientationabsolute",
-
-orientationHandler,
-
-true
-
-);
-
-
-window.addEventListener(
-
-"deviceorientation",
-
-orientationHandler,
-
-true
-
-);
-
-}
-
-
-/* ==============================
-   ANGULAR DIFFERENCE
-================================ */
-
-function bearingDifference(
-target,
-current
-){
-
-return (
-
-(
-target -
-current +
-540
-)
-
-%360
-
-)-180;
-
-}
-
-
-/* ==============================
-   LIVE GUIDANCE
-================================ */
-
-function updateCameraGuidance(){
-
-if(
-cameraHeading === null
-)
-return;
-
-
-const difference =
-
-bearingDifference(
-
-cameraTarget,
-
-cameraHeading
-
-);
-
-
-const absolute =
-
-Math.abs(
-difference
-);
-
-
-const shell =
-$("cameraShell");
-
-
-const guidance =
-$("cameraGuidance");
-
-
-const bearing =
-$("liveBearing");
-
-
-const capture =
-$("captureButton");
-
-
-if(
-!shell ||
-!guidance ||
-!bearing
-)
-return;
-
-
-bearing.textContent =
-
-Math.round(
-cameraHeading
-)
-
-.toString()
-.padStart(3,"0")
-
-+
-
-"°";
-
-
-shell.classList.remove(
-
-"align-red",
-
-"align-yellow",
-
-"align-green"
-
-);
-
-
-capture.classList.remove(
-"ready"
-);
-
-
-/* ==========================
-   GREEN — WITHIN TOLERANCE
-========================== */
-
-if(
-absolute <=
-cameraTolerance
-){
-
-shell.classList.add(
-"align-green"
-);
-
-
-capture.classList.add(
-"ready"
-);
-
-
-guidance.innerHTML = `
-
-<span
-style="color:#65ff83"
->
-
-✓ ALIGNED
-
-</span>
-
-<br>
-
-<span
-style="font-size:12px"
->
-
-HOLD STEADY
-
-</span>
-
-`;
-
-}
-
-
-/* ==========================
-   YELLOW — NEAR TARGET
-========================== */
-
-else if(
-absolute <=
-cameraTolerance + 20
-){
-
-shell.classList.add(
-"align-yellow"
-);
-
-
-guidance.innerHTML =
-
-difference > 0
-
-?
-
-`
-
-<span class="cameraArrow">
-→
-</span>
-
-SLIGHTLY RIGHT
-
-`
-
-:
-
-`
-
-<span class="cameraArrow">
-←
-</span>
-
-SLIGHTLY LEFT
-
-`;
-
-}
-
-
-/* ==========================
-   RED — OUT OF RANGE
-========================== */
-
-else{
-
-shell.classList.add(
-"align-red"
-);
-
-
-guidance.innerHTML =
-
-difference > 0
-
-?
-
-`
-
-<span class="cameraArrow">
-→→
-</span>
-
-TURN RIGHT
-
-`
-
-:
-
-`
-
-<span class="cameraArrow">
-←←
-</span>
-
-TURN LEFT
-
-`;
-
-}
-
-
-/* Rotate dial visually */
-
-const dial =
-$("compassDial");
-
-
-if(dial){
-
-dial.style.transform =
-
-"translate(-50%,-50%) rotate(" +
-(-cameraHeading) +
-"deg)";
-
-}
-
-}
-
-
-/* ==============================
-   CAPTURE PHOTO
-================================ */
-
-function captureGuidedImage(){
-
-const video =
-$("cameraVideo");
-
-
-if(
-!cameraStream ||
-!video ||
-!video.videoWidth
-){
-
-alert(
-"Start the camera first."
-);
-
-return;
-
-}
-
-
-if(
-cameraHeading === null
-){
-
-alert(
-"Compass bearing is not available yet."
-);
-
-return;
-
-}
-
-
-const difference =
-
-Math.abs(
-
-bearingDifference(
-
-cameraTarget,
-
-cameraHeading
-
-)
-
-);
-
-
-/* Warn if outside tolerance */
-
-if(
-difference >
-cameraTolerance
-){
-
-const proceed =
-confirm(
-
-"You are outside the selected bearing tolerance.\n\nCapture anyway?"
-
-);
-
-
-if(!proceed)
-return;
-
-}
-
-
-const canvas =
-$("captureCanvas");
-
-
-const context =
-canvas.getContext(
-"2d"
-);
-
-
-canvas.width =
-video.videoWidth;
-
-
-canvas.height =
-video.videoHeight;
-
-
-context.drawImage(
-
-video,
-
-0,
-0,
-
-canvas.width,
-canvas.height
-
-);
-
-
-/* Embed camera information */
-
-drawEmbeddedCameraOverlay(
-
-context,
-
-canvas.width,
-
-canvas.height
-
-);
-
-
-const imageData =
-
-canvas.toDataURL(
-
-"image/jpeg",
-
-0.88
-
-);
-
-
-const helipad =
-db.helipads[
-cameraHelipad
-];
-
-
-const view =
-helipad
-.viewConfig[
-cameraViewIndex
-];
-
-
-db.images.unshift({
-
-id:
-"IMG-" +
-Date.now(),
-
-helipad:
-cameraHelipad,
-
-view:
-view.id,
-
-viewLabel:
-view.label,
-
-bearing:
-Math.round(
-cameraHeading
-),
-
-target:
-cameraTarget,
-
-tolerance:
-cameraTolerance,
-
-capturedBy:
-currentUser().id,
-
-time:
-new Date()
-.toISOString(),
-
-image:
-imageData
-
-});
-
-
-saveDatabase();
-
-
-addAudit(
-
-"IMAGE CAPTURE",
-
-cameraHelipad +
-" / " +
-view.label +
-" / " +
-Math.round(
-cameraHeading
-) +
-"°"
-
-);
-
-
-$("capturedPreview")
-.innerHTML = `
-
-<div class="history">
-
-  <b>
-    CAPTURE SAVED
-  </b>
-
-  <br><br>
-
-  <img
-    src="${imageData}"
-    style="
-      width:100%;
-      border-radius:10px;
-    "
-  >
-
-</div>
-
-`;
-
-
-$("cameraMessage")
-.textContent =
-
-"Image saved with embedded radial, bearing and timestamp.";
-
-}
-
-
-/* ==============================
-   EMBED RADIAL IN PHOTO
-================================ */
-
-function drawEmbeddedCameraOverlay(
-ctx,
-width,
-height
-){
-
-const helipad =
-db.helipads[
-cameraHelipad
-];
-
-
-const view =
-helipad
-.viewConfig[
-cameraViewIndex
-];
-
-
-const radius =
-
-Math.min(
-width,
-height
-) * .13;
-
-
-const centreX =
-width/2;
-
-
-const centreY =
-height/2;
-
-
-/* Main radial circle */
-
-ctx.save();
-
-
-ctx.lineWidth =
-
-Math.max(
-4,
-width/250
-);
-
-
-ctx.strokeStyle =
-"#FFD21F";
-
-
-ctx.beginPath();
-
-
-ctx.arc(
-
-centreX,
-
-centreY,
-
-radius,
-
-0,
-
-Math.PI*2
-
-);
-
-
-ctx.stroke();
-
-
-/* Direction markers */
-
-ctx.textAlign =
-"center";
-
-
-ctx.fillStyle =
-"#FFD21F";
-
-
-ctx.font =
-
-"bold " +
-Math.round(
-radius*.22
-) +
-"px Arial";
-
-
-ctx.fillText(
-
-"N",
-
-centreX,
-
-centreY-radius+28
-
-);
-
-
-ctx.fillStyle =
-"#FFFFFF";
-
-
-ctx.fillText(
-
-"S",
-
-centreX,
-
-centreY+radius-12
-
-);
-
-
-ctx.fillText(
-
-"E",
-
-centreX+radius-20,
-
-centreY+8
-
-);
-
-
-ctx.fillText(
-
-"W",
-
-centreX-radius+20,
-
-centreY+8
-
-);
-
-
-/* Bearing value */
-
-ctx.fillStyle =
-"#FFD21F";
-
-
-ctx.font =
-
-"bold " +
-Math.round(
-radius*.27
-) +
-"px Arial";
-
-
-ctx.fillText(
-
-Math.round(
-cameraHeading
-)
-
-.toString()
-.padStart(3,"0")
-
-+
-
-"°",
-
-centreX,
-
-centreY+10
-
-);
-
-
-ctx.restore();
-
-
-/* Bottom information panel */
-
-const panelHeight =
-
-Math.max(
-
-115,
-
-height * .16
-
-);
-
-
-ctx.fillStyle =
-"rgba(0,0,0,.74)";
-
-
-ctx.fillRect(
-
-0,
-
-height-panelHeight,
-
-width,
-
-panelHeight
-
-);
-
-
-const fontSize =
-
-Math.max(
-
-18,
-
-Math.round(
-width/32
-)
-
-);
-
-
-ctx.textAlign =
-"left";
-
-
-ctx.font =
-
-"bold " +
-fontSize +
-"px Arial";
-
-
-ctx.fillStyle =
-"#FFD21F";
-
-
-ctx.fillText(
-
-cameraHelipad +
-" • " +
-view.label,
-
-20,
-
-height -
-panelHeight +
-fontSize +
-10
-
-);
-
-
-ctx.fillStyle =
-"#FFFFFF";
-
-
-ctx.fillText(
-
-"BEARING " +
-
-Math.round(
-cameraHeading
-)
-
-.toString()
-.padStart(3,"0")
-
-+
-
-"°   TARGET " +
-
-cameraTarget +
-
-"° ±" +
-
-cameraTolerance +
-
-"°",
-
-20,
-
-height -
-panelHeight +
-(fontSize*2) +
-20
-
-);
-
-
-ctx.fillText(
-
-"CAPTURED BY " +
-currentUser().id,
-
-20,
-
-height -
-panelHeight +
-(fontSize*3) +
-30
-
-);
-
-
-ctx.fillText(
-
-new Date()
-.toLocaleString(),
-
-20,
-
-height -
-15
-
-);
-
-}
-
-
-/* ==============================
-   STOP CAMERA
-================================ */
-
-function stopCamera(){
-
-if(
-cameraStream
-){
-
-cameraStream
-
-.getTracks()
-
-.forEach(
-track =>
-track.stop()
-);
-
-
-cameraStream =
-null;
-
-}
-
-
-if(
-orientationHandler
-){
-
-window.removeEventListener(
-
-"deviceorientationabsolute",
-
-orientationHandler,
-
-true
-
-);
-
-
-window.removeEventListener(
-
-"deviceorientation",
-
-orientationHandler,
-
-true
-
-);
-
-
-orientationHandler =
-null;
-
-}
-
-  }
-/* ==============================
-   USER MANAGEMENT
-================================ */
-
-let selectedUserId =
-null;
-
-
-function renderUsers(){
-
-$("content")
-.innerHTML = `
-
-
-<div class="grid g2">
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-SEARCH PERSONNEL / USERS
-
-</div>
-
-
-<div class="cardBody">
-
-
-<input
-id="userSearch"
-placeholder="Search User ID"
->
-
-
-<div
-id="userList"
-></div>
-
-
-</div>
-
-</div>
-
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-SELECTED USER
-
-</div>
-
-
-<div
-class="cardBody"
-id="userEditor"
->
-
-Select a user.
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-CREATE NEW USER
-
-</div>
-
-
-<div class="cardBody">
-
-
-<div class="grid g2">
-
-
-<div>
-
-
-<label>
-User ID
-</label>
-
-
-<input
-id="newUserId"
-placeholder="Example: USER01"
->
-
-
-<label>
-Password
-</label>
-
-
-<input
-id="newUserPassword"
->
-
-
-<label>
-Role
-</label>
-
-
-<select
-id="newUserRole"
->
-
-<option value="CAPTURER">
-Capturer
-</option>
-
-<option value="OBSERVER">
-Observer
-</option>
-
-<option value="AVIATOR">
-Aviator
-</option>
-
-<option value="ADMIN">
-Administrator
-</option>
-
-</select>
-
-
-<div
-id="observerTypeContainer"
-class="hidden"
->
-
-
-<label>
-Observer Type
-</label>
-
-
-<select
-id="newObserverType"
->
-
-<option value="INSTATION">
-
-Instation Observer
-
-</option>
-
-<option value="OUTSTATION">
-
-Outstation Observer
-
-</option>
-
-</select>
-
-
-</div>
-
-
-</div>
-
-
-
-<div>
-
-
-<button
-class="btn primary"
-id="createUserButton"
-style="
-width:100%;
-margin-top:25px;
-"
->
-
-CREATE USER
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-</div>
-
-`;
-
-
-/* Search */
-
-$("userSearch")
-.oninput =
-renderUserList;
-
-
-/* Observer type visibility */
-
-$("newUserRole")
-.onchange=()=>{
-
-$("observerTypeContainer")
-.classList.toggle(
-
-"hidden",
-
-$("newUserRole")
-.value !==
-"OBSERVER"
-
-);
-
-};
-
-
-/* Create user */
-
-$("createUserButton")
-.onclick =
-createUser;
-
-
-renderUserList();
-
-}
-
-
-
-/* ==============================
-   CREATE USER
-================================ */
-
-function createUser(){
-
-const id =
-
-$("newUserId")
-.value
-.trim()
-.toUpperCase();
-
-
-const password =
-
-$("newUserPassword")
-.value;
-
-
-const role =
-
-$("newUserRole")
-.value;
-
-
-if(
-!id ||
-!password
-){
-
-alert(
-"Enter User ID and password."
-);
-
-return;
-
-}
-
-
-if(
-db.users[id]
-){
-
-alert(
-"This User ID already exists."
-);
-
-return;
-
-}
-
-
-db.users[id]={
-
-id,
-
-password,
-
-role,
-
-observerType:
-
-role === "OBSERVER"
-
-?
-
-$("newObserverType")
-.value
-
-:
-
-null,
-
-helipads:[],
-
-active:true,
-
-primary:false
-
-};
-
-
-saveDatabase();
-
-
-addAudit(
-
-"CREATE USER",
-
-id +
-" / " +
-role
-
-);
-
-
-alert(
-"User created successfully."
-);
-
-
-renderUsers();
-
-}
-
-
-
-/* ==============================
-   USER SEARCH LIST
-================================ */
-
-function renderUserList(){
-
-const list =
-$("userList");
-
-
-if(!list)
-return;
-
-
-const search =
-
-(
-$("userSearch")
-?.value ||
-""
-)
-
-.trim()
-.toUpperCase();
-
-
-const users =
-
-Object.values(
-db.users
-)
-
-.filter(
-user =>
-
-user.id
-.includes(search)
-
-);
-
-
-list.innerHTML =
-
-users.map(
-user=>`
-
-<div
-class="
-person
-${
-
-selectedUserId === user.id
-?
-"active"
-:
-""
-
-}
-"
-
-data-user-id="${safe(
-user.id
-)}"
->
-
-<b>
-${safe(
-user.id
-)}
-</b>
-
-<br>
-
-<span class="small">
-
-${safe(
-user.role
-)}
-
-${
-
-user.observerType
-?
-" / " +
-safe(
-user.observerType
-)
-:
-""
-
-}
-
-</span>
-
-</div>
-
-`
-
-).join("");
-
-
-list
-
-.querySelectorAll(
-"[data-user-id]"
-)
-
-.forEach(
-item=>{
-
-item.onclick=()=>{
-
-selectUser(
-item.dataset.userId
-);
-
-};
-
-});
-
-}
-
-
-
-/* ==============================
-   SELECT USER
-================================ */
-
-function selectUser(
-id
-){
-
-selectedUserId =
-id;
-
-
-renderUserList();
-
-
-const user =
-db.users[id];
-
-
-if(!user)
-return;
-
-
-if(
-!Array.isArray(
-user.helipads
-)
-){
-
-user.helipads=[];
-
-}
-
-
-const helipads =
-
-Object.values(
-db.helipads
-)
-
-.filter(
-helipad =>
-helipad.active !== false
-);
-
-
-$("userEditor")
-.innerHTML = `
-
-
-<h3>
-${safe(
-user.id
-)}
-</h3>
-
-
-<div class="small">
-
-${safe(
-user.role
-)}
-
-${
-
-user.observerType
-?
-" / " +
-safe(
-user.observerType
-)
-:
-""
-
-}
-
-</div>
-
-
-<label>
-Assigned / Authorised Helipads
-</label>
-
-
-<div class="chipGrid">
-
-
-${
-
-helipads.map(
-helipad=>`
-
-<button
-
-class="
-chip
-${
-
-user.helipads
-.includes(
-helipad.id
-)
-
-?
-"on"
-:
-""
-
-}
-"
-
-data-user-helipad="${safe(
-helipad.id
-)}"
->
-
-${safe(
-helipad.id
-)}
-
-</button>
-
-`
-
-).join("")
-
-}
-
-
-</div>
-
-
-<button
-class="btn success"
-id="saveUserAssignments"
-style="
-width:100%;
-margin-top:15px;
-"
->
-
-SAVE HELIPAD ASSIGNMENTS
-
-</button>
-
-
-${
-
-user.primary
-
-?
-
-""
-
-:
-
-`
-
-<button
-class="btn danger"
-id="toggleUserActive"
-style="
-width:100%;
-margin-top:8px;
-"
->
-
-${
-
-user.active === false
-?
-"REACTIVATE USER"
-:
-"DEACTIVATE USER"
-
-}
-
-</button>
-
-`
-
-}
-
-`;
-
-
-/* One-click helipad control */
-
-$("userEditor")
-
-.querySelectorAll(
-"[data-user-helipad]"
-)
-
-.forEach(
-button=>{
-
-button.onclick=()=>{
-
-const helipadId =
-button.dataset.userHelipad;
-
-
-const assigned =
-
-user.helipads
-.includes(
-helipadId
-);
-
-
-/*
-Capturer and Outstation Observer:
-one operational helipad.
-
-Instation Observer, Aviator and
-Administrator:
-multiple helipads.
-*/
-
-const singleHelipad =
-
-user.role ===
-"CAPTURER"
-
-||
-
-(
-user.role ===
-"OBSERVER"
-
-&&
-
-user.observerType ===
-"OUTSTATION"
-);
-
-
-if(assigned){
-
-user.helipads =
-
-user.helipads.filter(
-item =>
-item !== helipadId
-);
-
-}
-
-else if(
-singleHelipad
-){
-
-user.helipads=[
-helipadId
-];
-
-}
-
-else{
-
-user.helipads.push(
-helipadId
-);
-
-}
-
-
-saveDatabase();
-
-
-selectUser(
-id
-);
-
-};
-
-});
-
-
-$("saveUserAssignments")
-.onclick=()=>{
-
-addAudit(
-
-"HELIPAD ASSIGNMENT",
-
-id +
-" → " +
-user.helipads.join(", ")
-
-);
-
-
-alert(
-"Helipad assignments saved."
-);
-
-};
-
-
-/* Activate/deactivate */
-
-if(
-$("toggleUserActive")
-){
-
-$("toggleUserActive")
-.onclick=()=>{
-
-user.active =
-user.active === false;
-
-
-saveDatabase();
-
-
-addAudit(
-
-"USER STATUS",
-
-id +
-" → " +
-(
-user.active
-?
-"ACTIVE"
-:
-"INACTIVE"
-)
-
-);
-
-
-selectUser(
-id
-);
-
-};
-
-}
-
-}
-
-
-
-/* ==============================
-   SCHEDULES
-================================ */
-
-function renderSchedules(){
-
-$("content")
-.innerHTML = `
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-CAPTURE / WEATHER SCHEDULE
-
-</div>
-
-
-<div class="cardBody">
-
-
-<label>
-Helipad
-</label>
-
-
-<select id="scheduleHelipad">
-
-
-${
-
-Object.values(
-db.helipads
-)
-
-.filter(
-helipad =>
-helipad.active !== false
-)
-
-.map(
-helipad=>`
-
-<option value="${safe(
-helipad.id
-)}">
-
-${safe(
-helipad.id
-)}
-
-</option>
-
-`
-
-).join("")
-
-}
-
-
-</select>
-
-
-
-<label>
-Task Type
-</label>
-
-
-<select id="scheduleType">
-
-<option value="IMAGE">
-
-IMAGE CAPTURE
-
-</option>
-
-<option value="WEATHER">
-
-WEATHER UPDATE
-
-</option>
-
-</select>
-
-
-
-<label>
-Due Date / Time
-</label>
-
-
-<input
-id="scheduleTime"
-type="datetime-local"
->
-
-
-<button
-class="btn primary"
-id="createScheduleButton"
-style="
-width:100%;
-margin-top:15px;
-"
->
-
-CREATE SCHEDULE
-
-</button>
-
-
-</div>
-
-</div>
-
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-CURRENT TASKS
-
-</div>
-
-
-<div class="cardBody">
-
-
-${
-
-db.tasks.length
-
-?
-
-db.tasks
-
-.slice()
-
-.reverse()
-
-.map(
-task=>`
-
-<div class="history">
-
-<b>
-
-${safe(
-task.helipad
-)}
-
-•
-
-${safe(
-task.type
-)}
-
-</b>
-
-<br>
-
-Due:
-
-${
-
-task.due
-?
-new Date(
-task.due
-)
-.toLocaleString()
-:
-"—"
-
-}
-
-<br>
-
-Reminder:
-
-${
-
-task.reminder
-?
-new Date(
-task.reminder
-)
-.toLocaleString()
-:
-"—"
-
-}
-
-<br>
-
-Status:
-
-${safe(
-task.status ||
-"SCHEDULED"
-)}
-
-</div>
-
-`
-
-).join("")
-
-:
-
-"No scheduled tasks."
-
-}
-
-
-</div>
-
-</div>
-
-`;
-
-
-$("createScheduleButton")
-.onclick=()=>{
-
-const helipad =
-$("scheduleHelipad")
-.value;
-
-
-const type =
-$("scheduleType")
-.value;
-
-
-const due =
-new Date(
-$("scheduleTime")
-.value
-);
-
-
-if(
-!helipad ||
-isNaN(due)
-){
-
-alert(
-"Select a helipad and valid date/time."
-);
-
-return;
-
-}
-
-
-const reminder =
-
-new Date(
-
-due.getTime()
--
-10*60*1000
-
-);
-
-
-db.tasks.push({
-
-id:
-"TASK-" +
-Date.now(),
-
-helipad,
-
-type,
-
-due:
-due.toISOString(),
-
-reminder:
-reminder.toISOString(),
-
-status:
-"SCHEDULED",
-
-createdBy:
-currentUser().id
-
-});
-
-
-saveDatabase();
-
-
-addAudit(
-
-"CREATE SCHEDULE",
-
-helipad +
-" / " +
-type
-
-);
-
-
-alert(
-"Schedule created. Reminder time is 10 minutes before the task."
-);
-
-
-renderSchedules();
-
-};
-
-}
-
-
-
-/* ==============================
-   ADMIN RECORDS
-================================ */
-
-function renderRecords(){
-
-$("content")
-.innerHTML = `
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-SYSTEM RECORDS / AUDIT
-
-</div>
-
-
-<div class="cardBody">
-
-
-<div class="grid g4">
-
-
-<div class="kpi">
-
-OBSERVATIONS
-
-<b>
-${db.observations.length}
-</b>
-
-</div>
-
-
-<div class="kpi">
-
-IMAGES
-
-<b>
-${db.images.length}
-</b>
-
-</div>
-
-
-<div class="kpi">
-
-AIRREPs
-
-<b>
-${db.airreps.length}
-</b>
-
-</div>
-
-
-<div class="kpi">
-
-AUDIT EVENTS
-
-<b>
-${db.audit.length}
-</b>
-
-</div>
-
-
-</div>
-
-
-<br>
-
-
-<button
-class="btn primary"
-id="exportBackupButton"
->
-
-EXPORT DATABASE BACKUP
-
-</button>
-
-
-<div
-style="margin-top:15px"
->
-
-
-${
-
-db.audit
-
-.slice(
-0,
-100
-)
-
-.map(
-event=>`
-
-<div class="history">
-
-<b>
-
-${safe(
-event.action
-)}
-
-</b>
-
-<br>
-
-User:
-
-${safe(
-event.user
-)}
-
-<br>
-
-${safe(
-event.detail
-)}
-
-<br>
-
-<span class="small">
-
-${
-
-new Date(
-event.time
-)
-.toLocaleString()
-
-}
-
-</span>
-
-</div>
-
-`
-
-).join("")
-
-}
-
-
-</div>
-
-
-</div>
-
-</div>
-
-`;
-
-
-$("exportBackupButton")
-.onclick =
-exportDatabase;
-
-}
-
-
-
-/* ==============================
-   EXPORT DATABASE
-================================ */
-
-function exportDatabase(){
-
-const data =
-
-JSON.stringify(
-
-db,
-
-null,
-
-2
-
-);
-
-
-const blob =
-
-new Blob(
-
-[data],
-
-{
-type:
-"application/json"
-}
-
-);
-
-
-const url =
-
-URL.createObjectURL(
-blob
-);
-
-
-const link =
-
-document.createElement(
-"a"
-);
-
-
-link.href =
-url;
-
-
-link.download =
-
-"AWO_BACKUP_" +
-Date.now() +
-".json";
-
-
-link.click();
-
-
-setTimeout(
-()=>{
-
-URL.revokeObjectURL(
-url
-);
-
-},
-1000
-);
-
-}
-
-
-
-/* ==============================
-   NON-ADMIN ROLE HOME
-================================ */
-
-function renderRoleHome(){
-
-const user =
-currentUser();
-
-
-$("content")
-.innerHTML = `
-
-
-<div class="card">
-
-
-<div class="cardTitle">
-
-${safe(
-user.role
-)}
-WORKSPACE
-
-</div>
-
-
-<div class="cardBody">
-
-
-<h2>
-
-${safe(
-user.id
-)}
-
-</h2>
-
-
-<p>
-
-Assigned / authorised helipads:
-
-</p>
-
-
-<div class="chipGrid">
-
-
-${
-
-(
-user.helipads ||
-[]
-)
-
-.length
-
-?
-
-user.helipads
-
-.map(
-helipad=>`
-
-<div class="chip on">
-
-${safe(
-helipad
-)}
-
-</div>
-
-`
-
-).join("")
-
-:
-
-`
-
-<div class="small">
-
-No helipads assigned.
-
-</div>
-
-`
-
-}
-
-
-</div>
-
-
-</div>
-
-</div>
-
-`;
-
-}
-
-
-
-/* ==============================
-   LOGIN EVENT CONNECTION
-================================ */
-
-$("loginBtn")
-.onclick =
-login;
-
-
-$("loginPass")
-.addEventListener(
-
-"keydown",
-
-event=>{
-
-if(
-event.key ===
-"Enter"
-){
-
-login();
-
-}
-
-}
-
-);
-
-
-
-/* ==============================
-   LOGOUT EVENT
-================================ */
-
-$("logoutBtn")
-.onclick =
-logout;
-
-
-
-/* ==============================
-   PWA SERVICE WORKER
-================================ */
-
-if(
-"serviceWorker"
-in navigator
-){
-
-window
-.addEventListener(
-
-"load",
-
-()=>{
-
-navigator
-.serviceWorker
-.register(
-"./sw.js"
-)
-
-.catch(
-error=>{
-
-console.log(
-"Service worker:",
-error
-);
-
-}
-
-);
-
-}
-
-);
-
-}
-
-
-
-/* ==============================
-   START APPLICATION
-================================ */
-
-route();
-
-</script>
-
-</body>
-
-</html>
+.querySelector
