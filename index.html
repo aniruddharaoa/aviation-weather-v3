@@ -13,7 +13,183 @@
 <link rel="manifest" href="manifest.webmanifest">
 
 <title>AWO — Aviation Weather Operations</title>
+/* ==============================
+   GUIDED CAMERA
+================================ */
 
+.cameraShell{
+  position:relative;
+  width:100%;
+  max-width:700px;
+  margin:auto;
+  overflow:hidden;
+  border-radius:14px;
+  border:2px solid var(--line);
+  background:#000;
+}
+
+.cameraShell.align-red{
+  border-color:var(--red);
+}
+
+.cameraShell.align-yellow{
+  border-color:var(--amber);
+}
+
+.cameraShell.align-green{
+  border-color:var(--green);
+  box-shadow:0 0 18px rgba(0,255,100,.35);
+}
+
+#cameraVideo{
+  display:block;
+  width:100%;
+  min-height:420px;
+  object-fit:cover;
+  background:#000;
+}
+
+.cameraOverlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.compassDial{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:230px;
+  height:230px;
+  border:3px solid var(--yellow);
+  border-radius:50%;
+  background:rgba(0,0,0,.15);
+}
+
+.compassDial::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-12px;
+  transform:translateX(-50%);
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:20px solid var(--yellow);
+}
+
+.compassCentre{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--yellow);
+}
+
+.compassNorth{
+  position:absolute;
+  top:8px;
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--yellow);
+  font-weight:900;
+}
+
+.compassSouth{
+  position:absolute;
+  bottom:8px;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-weight:800;
+}
+
+.compassEast{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  color:white;
+  font-weight:800;
+}
+
+.compassWest{
+  position:absolute;
+  left:10px;
+  top:50%;
+  transform:translateY(-50%);
+  color:white;
+  font-weight:800;
+}
+
+.cameraBearing{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.72);
+  padding:8px 14px;
+  border-radius:20px;
+  color:var(--yellow);
+  font-size:22px;
+  font-weight:900;
+}
+
+.cameraGuidance{
+  position:absolute;
+  bottom:75px;
+  left:50%;
+  transform:translateX(-50%);
+  min-width:220px;
+  text-align:center;
+  background:rgba(0,0,0,.72);
+  padding:10px 15px;
+  border-radius:10px;
+  font-size:20px;
+  font-weight:900;
+}
+
+.cameraInfo{
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  right:10px;
+  background:rgba(0,0,0,.72);
+  padding:8px;
+  border-radius:8px;
+  color:white;
+  font-size:12px;
+}
+
+.referenceMini{
+  width:100%;
+  max-height:220px;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+
+.captureButton{
+  width:74px;
+  height:74px;
+  border-radius:50%;
+  border:6px solid white;
+  background:var(--red);
+  display:block;
+  margin:14px auto;
+}
+
+.captureButton.ready{
+  background:var(--green);
+}
+
+.cameraArrow{
+  font-size:30px;
+  color:var(--yellow);
+}
 <style>
 
 :root{
@@ -1193,6 +1369,46 @@ tabs=[
   ]
 
 ];
+
+
+/* CAPTURER CAMERA */
+
+if(
+user.role === "CAPTURER"
+){
+
+tabs.push([
+
+  "Camera",
+
+  renderGuidedCamera
+
+]);
+
+}
+
+
+/* OUTSTATION OBSERVER CAMERA */
+
+if(
+
+user.role === "OBSERVER"
+
+&&
+
+user.observerType === "OUTSTATION"
+
+){
+
+tabs.push([
+
+  "Camera",
+
+  renderGuidedCamera
+
+]);
+
+}
 
 }
 
@@ -3110,6 +3326,1584 @@ renderHelipads();
 };
 
 }
+  /* ==============================
+   GUIDED CAMERA ENGINE
+================================ */
+
+let cameraStream = null;
+let cameraHeading = null;
+let cameraTarget = 0;
+let cameraTolerance = 10;
+let cameraHelipad = null;
+let cameraViewIndex = 0;
+let orientationHandler = null;
+
+
+/* ==============================
+   OPEN CAMERA PAGE
+================================ */
+
+function renderGuidedCamera(){
+
+const user =
+currentUser();
+
+
+const authorised =
+
+(user.helipads || [])
+
+.filter(
+id =>
+
+db.helipads[id]
+
+&&
+
+db.helipads[id].active !== false
+
+);
+
+
+if(!authorised.length){
+
+$("content").innerHTML = `
+
+<div class="card">
+
+  <div class="cardTitle">
+    CAMERA
+  </div>
+
+  <div class="cardBody">
+
+    No helipad has been assigned
+    to this user.
+
+  </div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+cameraHelipad =
+authorised[0];
+
+
+const helipad =
+db.helipads[cameraHelipad];
+
+
+if(
+!Array.isArray(
+helipad.viewConfig
+)
+
+||
+
+!helipad.viewConfig.length
+){
+
+$("content").innerHTML = `
+
+<div class="card">
+
+  <div class="cardTitle">
+    CAMERA
+  </div>
+
+  <div class="cardBody">
+
+    The Administrator has not configured
+    reference views for this helipad.
+
+  </div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+cameraViewIndex = 0;
+
+
+drawCameraPage();
+
+}
+
+
+/* ==============================
+   DRAW CAMERA PAGE
+================================ */
+
+function drawCameraPage(){
+
+stopCamera();
+
+
+const helipad =
+db.helipads[cameraHelipad];
+
+
+const views =
+helipad.viewConfig;
+
+
+const view =
+views[cameraViewIndex];
+
+
+cameraTarget =
+Number(
+view.bearing || 0
+);
+
+
+cameraTolerance =
+Number(
+view.tolerance || 10
+);
+
+
+$("content").innerHTML = `
+
+<div class="card">
+
+  <div class="cardTitle">
+
+    ${safe(cameraHelipad)}
+    —
+    GUIDED CAPTURE
+
+  </div>
+
+
+  <div class="cardBody">
+
+
+    <label>
+      Required View
+    </label>
+
+
+    <select id="cameraViewSelect">
+
+      ${
+
+        views.map(
+          (view,index)=>`
+
+          <option
+            value="${index}"
+            ${
+              index === cameraViewIndex
+              ?
+              "selected"
+              :
+              ""
+            }
+          >
+
+            ${safe(
+              view.label ||
+              ("VIEW "+(index+1))
+            )}
+
+            —
+
+            ${Number(
+              view.bearing || 0
+            )
+            .toString()
+            .padStart(3,"0")}°
+
+          </option>
+
+          `
+        ).join("")
+
+      }
+
+    </select>
+
+
+    <div
+      class="grid g2"
+      style="margin-top:12px"
+    >
+
+
+      <div>
+
+        <div class="small">
+          REFERENCE IMAGE
+        </div>
+
+
+        ${
+
+          view.reference
+
+          ?
+
+          `
+
+          <img
+            src="${view.reference}"
+            class="referenceMini"
+          >
+
+          `
+
+          :
+
+          `
+
+          <div class="history">
+
+            No reference image.
+
+            <br>
+
+            Use configured radial:
+
+            <b>
+              ${cameraTarget}°
+            </b>
+
+          </div>
+
+          `
+
+        }
+
+      </div>
+
+
+      <div>
+
+        <div class="small">
+          TARGET
+        </div>
+
+
+        <h2>
+
+          ${cameraTarget
+          .toString()
+          .padStart(3,"0")}°
+
+          ±
+          ${cameraTolerance}°
+
+        </h2>
+
+
+        <button
+          class="btn primary"
+          id="startCameraButton"
+          style="width:100%"
+        >
+
+          START CAMERA
+
+        </button>
+
+      </div>
+
+
+    </div>
+
+
+    <div
+      id="cameraShell"
+      class="cameraShell"
+      style="margin-top:15px"
+    >
+
+
+      <video
+        id="cameraVideo"
+        autoplay
+        playsinline
+        muted
+      ></video>
+
+
+      <div class="cameraOverlay">
+
+
+        <div
+          id="liveBearing"
+          class="cameraBearing"
+        >
+          ---°
+        </div>
+
+
+        <div
+          id="compassDial"
+          class="compassDial"
+        >
+
+
+          <div class="compassNorth">
+            N
+          </div>
+
+
+          <div class="compassEast">
+            E
+          </div>
+
+
+          <div class="compassSouth">
+            S
+          </div>
+
+
+          <div class="compassWest">
+            W
+          </div>
+
+
+          <div class="compassCentre">
+          </div>
+
+
+        </div>
+
+
+        <div
+          id="cameraGuidance"
+          class="cameraGuidance"
+        >
+
+          START CAMERA
+
+        </div>
+
+
+        <div
+          class="cameraInfo"
+        >
+
+          HELIPAD:
+
+          <b>
+            ${safe(cameraHelipad)}
+          </b>
+
+          &nbsp;
+
+          VIEW:
+
+          <b>
+            ${safe(view.label)}
+          </b>
+
+          <br>
+
+          TARGET:
+
+          <b>
+            ${cameraTarget}°
+          </b>
+
+          &nbsp;
+
+          TOLERANCE:
+
+          <b>
+            ±${cameraTolerance}°
+          </b>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+    <button
+      id="captureButton"
+      class="captureButton"
+      title="Capture"
+    ></button>
+
+
+    <div
+      id="cameraMessage"
+      class="small center"
+    >
+
+      Camera not started.
+
+    </div>
+
+
+    <canvas
+      id="captureCanvas"
+      class="hidden"
+    ></canvas>
+
+
+    <div
+      id="capturedPreview"
+      style="margin-top:15px"
+    ></div>
+
+
+  </div>
+
+</div>
+
+`;
+
+
+/* Change required view */
+
+$("cameraViewSelect")
+.onchange=()=>{
+
+cameraViewIndex =
+Number(
+$("cameraViewSelect")
+.value
+);
+
+
+drawCameraPage();
+
+};
+
+
+/* Start camera */
+
+$("startCameraButton")
+.onclick =
+startGuidedCamera;
+
+
+/* Capture */
+
+$("captureButton")
+.onclick =
+captureGuidedImage;
+
+}
+
+
+/* ==============================
+   START CAMERA
+================================ */
+
+async function startGuidedCamera(){
+
+try{
+
+stopCamera();
+
+
+cameraStream =
+
+await navigator
+.mediaDevices
+.getUserMedia({
+
+video:{
+
+  facingMode:{
+    ideal:"environment"
+  }
+
+},
+
+audio:false
+
+});
+
+
+const video =
+$("cameraVideo");
+
+
+video.srcObject =
+cameraStream;
+
+
+await video.play();
+
+
+$("cameraMessage")
+.textContent =
+
+"Camera active. Align with the target bearing.";
+
+
+await startCompass();
+
+}
+
+catch(error){
+
+$("cameraMessage")
+.textContent =
+
+"Camera access failed: " +
+error.message;
+
+}
+
+}
+
+
+/* ==============================
+   COMPASS
+================================ */
+
+async function startCompass(){
+
+if(
+
+typeof DeviceOrientationEvent !==
+"undefined"
+
+&&
+
+typeof DeviceOrientationEvent
+.requestPermission ===
+"function"
+
+){
+
+try{
+
+const permission =
+
+await DeviceOrientationEvent
+.requestPermission();
+
+
+if(
+permission !==
+"granted"
+){
+
+$("cameraMessage")
+.textContent =
+
+"Compass permission was not granted.";
+
+return;
+
+}
+
+}
+
+catch(error){
+
+console.log(
+"Compass permission error:",
+error
+);
+
+}
+
+}
+
+
+/* Remove previous listener */
+
+if(
+orientationHandler
+){
+
+window.removeEventListener(
+
+"deviceorientationabsolute",
+
+orientationHandler,
+
+true
+
+);
+
+
+window.removeEventListener(
+
+"deviceorientation",
+
+orientationHandler,
+
+true
+
+);
+
+}
+
+
+/* New listener */
+
+orientationHandler =
+event=>{
+
+let heading = null;
+
+
+/* iPhone */
+
+if(
+typeof event.webkitCompassHeading ===
+"number"
+){
+
+heading =
+event.webkitCompassHeading;
+
+}
+
+
+/* Android */
+
+else if(
+typeof event.alpha ===
+"number"
+){
+
+heading =
+360 -
+event.alpha;
+
+}
+
+
+if(
+heading === null
+)
+return;
+
+
+cameraHeading =
+
+(
+heading % 360 + 360
+)
+
+%360;
+
+
+updateCameraGuidance();
+
+};
+
+
+window.addEventListener(
+
+"deviceorientationabsolute",
+
+orientationHandler,
+
+true
+
+);
+
+
+window.addEventListener(
+
+"deviceorientation",
+
+orientationHandler,
+
+true
+
+);
+
+}
+
+
+/* ==============================
+   ANGULAR DIFFERENCE
+================================ */
+
+function bearingDifference(
+target,
+current
+){
+
+return (
+
+(
+target -
+current +
+540
+)
+
+%360
+
+)-180;
+
+}
+
+
+/* ==============================
+   LIVE GUIDANCE
+================================ */
+
+function updateCameraGuidance(){
+
+if(
+cameraHeading === null
+)
+return;
+
+
+const difference =
+
+bearingDifference(
+
+cameraTarget,
+
+cameraHeading
+
+);
+
+
+const absolute =
+
+Math.abs(
+difference
+);
+
+
+const shell =
+$("cameraShell");
+
+
+const guidance =
+$("cameraGuidance");
+
+
+const bearing =
+$("liveBearing");
+
+
+const capture =
+$("captureButton");
+
+
+if(
+!shell ||
+!guidance ||
+!bearing
+)
+return;
+
+
+bearing.textContent =
+
+Math.round(
+cameraHeading
+)
+
+.toString()
+.padStart(3,"0")
+
++
+
+"°";
+
+
+shell.classList.remove(
+
+"align-red",
+
+"align-yellow",
+
+"align-green"
+
+);
+
+
+capture.classList.remove(
+"ready"
+);
+
+
+/* ==========================
+   GREEN — WITHIN TOLERANCE
+========================== */
+
+if(
+absolute <=
+cameraTolerance
+){
+
+shell.classList.add(
+"align-green"
+);
+
+
+capture.classList.add(
+"ready"
+);
+
+
+guidance.innerHTML = `
+
+<span
+style="color:#65ff83"
+>
+
+✓ ALIGNED
+
+</span>
+
+<br>
+
+<span
+style="font-size:12px"
+>
+
+HOLD STEADY
+
+</span>
+
+`;
+
+}
+
+
+/* ==========================
+   YELLOW — NEAR TARGET
+========================== */
+
+else if(
+absolute <=
+cameraTolerance + 20
+){
+
+shell.classList.add(
+"align-yellow"
+);
+
+
+guidance.innerHTML =
+
+difference > 0
+
+?
+
+`
+
+<span class="cameraArrow">
+→
+</span>
+
+SLIGHTLY RIGHT
+
+`
+
+:
+
+`
+
+<span class="cameraArrow">
+←
+</span>
+
+SLIGHTLY LEFT
+
+`;
+
+}
+
+
+/* ==========================
+   RED — OUT OF RANGE
+========================== */
+
+else{
+
+shell.classList.add(
+"align-red"
+);
+
+
+guidance.innerHTML =
+
+difference > 0
+
+?
+
+`
+
+<span class="cameraArrow">
+→→
+</span>
+
+TURN RIGHT
+
+`
+
+:
+
+`
+
+<span class="cameraArrow">
+←←
+</span>
+
+TURN LEFT
+
+`;
+
+}
+
+
+/* Rotate dial visually */
+
+const dial =
+$("compassDial");
+
+
+if(dial){
+
+dial.style.transform =
+
+"translate(-50%,-50%) rotate(" +
+(-cameraHeading) +
+"deg)";
+
+}
+
+}
+
+
+/* ==============================
+   CAPTURE PHOTO
+================================ */
+
+function captureGuidedImage(){
+
+const video =
+$("cameraVideo");
+
+
+if(
+!cameraStream ||
+!video ||
+!video.videoWidth
+){
+
+alert(
+"Start the camera first."
+);
+
+return;
+
+}
+
+
+if(
+cameraHeading === null
+){
+
+alert(
+"Compass bearing is not available yet."
+);
+
+return;
+
+}
+
+
+const difference =
+
+Math.abs(
+
+bearingDifference(
+
+cameraTarget,
+
+cameraHeading
+
+)
+
+);
+
+
+/* Warn if outside tolerance */
+
+if(
+difference >
+cameraTolerance
+){
+
+const proceed =
+confirm(
+
+"You are outside the selected bearing tolerance.\n\nCapture anyway?"
+
+);
+
+
+if(!proceed)
+return;
+
+}
+
+
+const canvas =
+$("captureCanvas");
+
+
+const context =
+canvas.getContext(
+"2d"
+);
+
+
+canvas.width =
+video.videoWidth;
+
+
+canvas.height =
+video.videoHeight;
+
+
+context.drawImage(
+
+video,
+
+0,
+0,
+
+canvas.width,
+canvas.height
+
+);
+
+
+/* Embed camera information */
+
+drawEmbeddedCameraOverlay(
+
+context,
+
+canvas.width,
+
+canvas.height
+
+);
+
+
+const imageData =
+
+canvas.toDataURL(
+
+"image/jpeg",
+
+0.88
+
+);
+
+
+const helipad =
+db.helipads[
+cameraHelipad
+];
+
+
+const view =
+helipad
+.viewConfig[
+cameraViewIndex
+];
+
+
+db.images.unshift({
+
+id:
+"IMG-" +
+Date.now(),
+
+helipad:
+cameraHelipad,
+
+view:
+view.id,
+
+viewLabel:
+view.label,
+
+bearing:
+Math.round(
+cameraHeading
+),
+
+target:
+cameraTarget,
+
+tolerance:
+cameraTolerance,
+
+capturedBy:
+currentUser().id,
+
+time:
+new Date()
+.toISOString(),
+
+image:
+imageData
+
+});
+
+
+saveDatabase();
+
+
+addAudit(
+
+"IMAGE CAPTURE",
+
+cameraHelipad +
+" / " +
+view.label +
+" / " +
+Math.round(
+cameraHeading
+) +
+"°"
+
+);
+
+
+$("capturedPreview")
+.innerHTML = `
+
+<div class="history">
+
+  <b>
+    CAPTURE SAVED
+  </b>
+
+  <br><br>
+
+  <img
+    src="${imageData}"
+    style="
+      width:100%;
+      border-radius:10px;
+    "
+  >
+
+</div>
+
+`;
+
+
+$("cameraMessage")
+.textContent =
+
+"Image saved with embedded radial, bearing and timestamp.";
+
+}
+
+
+/* ==============================
+   EMBED RADIAL IN PHOTO
+================================ */
+
+function drawEmbeddedCameraOverlay(
+ctx,
+width,
+height
+){
+
+const helipad =
+db.helipads[
+cameraHelipad
+];
+
+
+const view =
+helipad
+.viewConfig[
+cameraViewIndex
+];
+
+
+const radius =
+
+Math.min(
+width,
+height
+) * .13;
+
+
+const centreX =
+width/2;
+
+
+const centreY =
+height/2;
+
+
+/* Main radial circle */
+
+ctx.save();
+
+
+ctx.lineWidth =
+
+Math.max(
+4,
+width/250
+);
+
+
+ctx.strokeStyle =
+"#FFD21F";
+
+
+ctx.beginPath();
+
+
+ctx.arc(
+
+centreX,
+
+centreY,
+
+radius,
+
+0,
+
+Math.PI*2
+
+);
+
+
+ctx.stroke();
+
+
+/* Direction markers */
+
+ctx.textAlign =
+"center";
+
+
+ctx.fillStyle =
+"#FFD21F";
+
+
+ctx.font =
+
+"bold " +
+Math.round(
+radius*.22
+) +
+"px Arial";
+
+
+ctx.fillText(
+
+"N",
+
+centreX,
+
+centreY-radius+28
+
+);
+
+
+ctx.fillStyle =
+"#FFFFFF";
+
+
+ctx.fillText(
+
+"S",
+
+centreX,
+
+centreY+radius-12
+
+);
+
+
+ctx.fillText(
+
+"E",
+
+centreX+radius-20,
+
+centreY+8
+
+);
+
+
+ctx.fillText(
+
+"W",
+
+centreX-radius+20,
+
+centreY+8
+
+);
+
+
+/* Bearing value */
+
+ctx.fillStyle =
+"#FFD21F";
+
+
+ctx.font =
+
+"bold " +
+Math.round(
+radius*.27
+) +
+"px Arial";
+
+
+ctx.fillText(
+
+Math.round(
+cameraHeading
+)
+
+.toString()
+.padStart(3,"0")
+
++
+
+"°",
+
+centreX,
+
+centreY+10
+
+);
+
+
+ctx.restore();
+
+
+/* Bottom information panel */
+
+const panelHeight =
+
+Math.max(
+
+115,
+
+height * .16
+
+);
+
+
+ctx.fillStyle =
+"rgba(0,0,0,.74)";
+
+
+ctx.fillRect(
+
+0,
+
+height-panelHeight,
+
+width,
+
+panelHeight
+
+);
+
+
+const fontSize =
+
+Math.max(
+
+18,
+
+Math.round(
+width/32
+)
+
+);
+
+
+ctx.textAlign =
+"left";
+
+
+ctx.font =
+
+"bold " +
+fontSize +
+"px Arial";
+
+
+ctx.fillStyle =
+"#FFD21F";
+
+
+ctx.fillText(
+
+cameraHelipad +
+" • " +
+view.label,
+
+20,
+
+height -
+panelHeight +
+fontSize +
+10
+
+);
+
+
+ctx.fillStyle =
+"#FFFFFF";
+
+
+ctx.fillText(
+
+"BEARING " +
+
+Math.round(
+cameraHeading
+)
+
+.toString()
+.padStart(3,"0")
+
++
+
+"°   TARGET " +
+
+cameraTarget +
+
+"° ±" +
+
+cameraTolerance +
+
+"°",
+
+20,
+
+height -
+panelHeight +
+(fontSize*2) +
+20
+
+);
+
+
+ctx.fillText(
+
+"CAPTURED BY " +
+currentUser().id,
+
+20,
+
+height -
+panelHeight +
+(fontSize*3) +
+30
+
+);
+
+
+ctx.fillText(
+
+new Date()
+.toLocaleString(),
+
+20,
+
+height -
+15
+
+);
+
+}
+
+
+/* ==============================
+   STOP CAMERA
+================================ */
+
+function stopCamera(){
+
+if(
+cameraStream
+){
+
+cameraStream
+
+.getTracks()
+
+.forEach(
+track =>
+track.stop()
+);
+
+
+cameraStream =
+null;
+
+}
+
+
+if(
+orientationHandler
+){
+
+window.removeEventListener(
+
+"deviceorientationabsolute",
+
+orientationHandler,
+
+true
+
+);
+
+
+window.removeEventListener(
+
+"deviceorientation",
+
+orientationHandler,
+
+true
+
+);
+
+
+orientationHandler =
+null;
+
+}
+
+  }
 /* ==============================
    USER MANAGEMENT
 ================================ */
