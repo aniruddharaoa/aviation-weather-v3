@@ -2266,8 +2266,390 @@ renderHelipads();
 /* ==============================
    LOAD HELIPAD FOR EDITING
 ================================ */
+function renderHelipads(){
 
-function loadHelipadForEditing(
+$("content").innerHTML = `
+
+<div class="card">
+
+  <div class="cardTitle">
+    CREATE / UPDATE HELIPAD
+  </div>
+
+  <div class="cardBody">
+
+    <div class="grid g2">
+
+      <div>
+
+        <label>
+          Helipad Name / ID
+        </label>
+
+        <input
+          id="helipadName"
+          placeholder="Example: HLP01"
+        >
+
+
+        <label>
+          Operating Mode
+        </label>
+
+        <select id="helipadMode">
+
+          <option value="OUTSTATION">
+            Outstation Observer
+          </option>
+
+          <option value="CAP_IN">
+            Capturer + Instation Observer
+          </option>
+
+        </select>
+
+
+        <label>
+          Number of Views
+        </label>
+
+        <select id="helipadViews">
+
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option selected>4</option>
+
+        </select>
+
+      </div>
+
+
+      <div>
+
+        <label>
+          Weather Validity (minutes)
+        </label>
+
+        <input
+          id="weatherValidity"
+          type="number"
+          value="30"
+        >
+
+
+        <label>
+          Automatic Colour Coding
+        </label>
+
+        <select id="autoColour">
+
+          <option value="ON">
+            ON
+          </option>
+
+          <option value="OFF">
+            OFF
+          </option>
+
+        </select>
+
+
+        <label>
+          RED below visibility (m)
+        </label>
+
+        <input
+          id="redVisibility"
+          type="number"
+          value="1000"
+        >
+
+
+        <label>
+          YELLOW below visibility (m)
+        </label>
+
+        <input
+          id="yellowVisibility"
+          type="number"
+          value="3000"
+        >
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="btn primary"
+      id="saveHelipadButton"
+      style="
+        width:100%;
+        margin-top:15px;
+      "
+    >
+      SAVE HELIPAD
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <div class="cardTitle">
+    EXISTING HELIPADS
+  </div>
+
+  <div class="cardBody tableWrap">
+
+    <table>
+
+      <tr>
+
+        <th>
+          HELIPAD
+        </th>
+
+        <th>
+          MODE
+        </th>
+
+        <th>
+          STATUS
+        </th>
+
+        <th>
+          VIEWS
+        </th>
+
+        <th>
+          ACTION
+        </th>
+
+      </tr>
+
+
+      ${
+
+        Object.values(
+          db.helipads
+        )
+
+        .map(
+          helipad=>{
+
+            const status =
+            getHelipadStatus(
+              helipad
+            );
+
+
+            return `
+
+            <tr>
+
+              <td>
+                <b>
+                  ${safe(helipad.id)}
+                </b>
+              </td>
+
+
+              <td>
+                ${safe(helipad.mode)}
+              </td>
+
+
+              <td>
+
+                <span
+                  class="status ${status}"
+                >
+                  ${status}
+                </span>
+
+              </td>
+
+
+              <td>
+                ${safe(helipad.views || 4)}
+              </td>
+
+
+              <td>
+
+                <button
+                  class="btn"
+                  data-edit-helipad="${safe(helipad.id)}"
+                >
+                  EDIT
+                </button>
+
+
+                <button
+                  class="btn primary"
+                  data-ref-helipad="${safe(helipad.id)}"
+                >
+                  REFERENCE IMAGES
+                </button>
+
+
+                <button
+                  class="btn danger"
+                  data-toggle-helipad="${safe(helipad.id)}"
+                >
+
+                  ${
+                    helipad.active === false
+                    ?
+                    "RESTORE"
+                    :
+                    "ARCHIVE"
+                  }
+
+                </button>
+
+              </td>
+
+            </tr>
+
+            `;
+
+          }
+
+        ).join("")
+
+      }
+
+    </table>
+
+  </div>
+
+</div>
+
+`;
+
+
+/* Save helipad */
+
+$("saveHelipadButton")
+.onclick =
+saveHelipad;
+
+
+/* Edit */
+
+$("content")
+
+.querySelectorAll(
+  "[data-edit-helipad]"
+)
+
+.forEach(
+  button=>{
+
+    button.onclick=()=>{
+
+      loadHelipadForEditing(
+        button.dataset.editHelipad
+      );
+
+    };
+
+  }
+);
+
+
+/* Reference images */
+
+$("content")
+
+.querySelectorAll(
+  "[data-ref-helipad]"
+)
+
+.forEach(
+  button=>{
+
+    button.onclick=()=>{
+
+      openReferenceSettings(
+        button.dataset.refHelipad
+      );
+
+    };
+
+  }
+);
+
+
+/* Archive / Restore */
+
+$("content")
+
+.querySelectorAll(
+  "[data-toggle-helipad]"
+)
+
+.forEach(
+  button=>{
+
+    button.onclick=()=>{
+
+      const id =
+      button.dataset.toggleHelipad;
+
+
+      const helipad =
+      db.helipads[id];
+
+
+      if(!helipad)
+      return;
+
+
+      helipad.active =
+      helipad.active === false;
+
+
+      saveDatabase();
+
+
+      addAudit(
+
+        "HELIPAD STATUS",
+
+        id +
+        " → " +
+        (
+          helipad.active
+          ?
+          "ACTIVE"
+          :
+          "ARCHIVED"
+        )
+
+      );
+
+
+      renderHelipads();
+
+    };
+
+  }
+);
+
+}
+
+/* ==============================
+   REFERENCE IMAGE SETTINGS
+================================ */
+
+function openReferenceSettings(
 id
 ){
 
@@ -2279,61 +2661,455 @@ if(!helipad)
 return;
 
 
-$("helipadName")
-.value =
-helipad.id;
+/* Ensure view configuration exists */
 
+if(
+!Array.isArray(
+helipad.viewConfig
+)
+){
 
-$("helipadMode")
-.value =
-helipad.mode ||
-"OUTSTATION";
+helipad.viewConfig =
 
+Array.from(
 
-$("helipadViews")
-.value =
-String(
-helipad.views ||
-4
+{
+  length:
+  Number(
+    helipad.views ||
+    4
+  )
+},
+
+(_,index)=>({
+
+  id:
+  "V" +
+  (index+1),
+
+  label:
+  "VIEW " +
+  (index+1),
+
+  bearing:
+  (index*90)%360,
+
+  tolerance:
+  10,
+
+  reference:null
+
+})
+
 );
-
-
-$("weatherValidity")
-.value =
-helipad.validity ||
-30;
-
-
-$("autoColour")
-.value =
-helipad.autoColour ||
-"ON";
-
-
-$("redVisibility")
-.value =
-helipad.redVis ||
-1000;
-
-
-$("yellowVisibility")
-.value =
-helipad.yellowVis ||
-3000;
-
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
 
 }
 
 
+$("content")
+.innerHTML = `
 
+
+<button
+class="btn"
+id="backToHelipads"
+style="margin-bottom:10px"
+>
+← BACK TO HELIPADS
+</button>
+
+
+<div class="card">
+
+  <div class="cardTitle">
+
+    ${safe(id)}
+    —
+    REFERENCE IMAGES & RADIAL SETTINGS
+
+  </div>
+
+
+  <div class="cardBody">
+
+
+    <div class="small">
+
+      Configure each required view.
+      The bearing and tolerance will
+      later guide Capturer and Outstation
+      Observer inside the live camera.
+
+    </div>
+
+
+    ${
+
+      helipad.viewConfig
+
+      .map(
+        (
+          view,
+          index
+        )=>`
+
+        <div class="history">
+
+
+          <h3>
+
+            VIEW
+            ${index+1}
+
+          </h3>
+
+
+          <label>
+            View Name
+          </label>
+
+          <input
+            id="viewName${index}"
+            value="${safe(view.label)}"
+          >
+
+
+          <label>
+            Target Bearing (°)
+          </label>
+
+          <input
+            id="viewBearing${index}"
+            type="number"
+            min="0"
+            max="359"
+            value="${Number(view.bearing)}"
+          >
+
+
+          <label>
+            Allowed Tolerance ±°
+          </label>
+
+          <input
+            id="viewTolerance${index}"
+            type="number"
+            min="0"
+            max="45"
+            value="${Number(view.tolerance)}"
+          >
+
+
+          <label>
+            Reference Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            data-reference-index="${index}"
+          >
+
+
+          <div
+            id="referencePreview${index}"
+            style="margin-top:10px"
+          >
+
+            ${
+              view.reference
+
+              ?
+
+              `
+
+              <img
+                src="${view.reference}"
+                style="
+                  width:100%;
+                  max-width:420px;
+                  border-radius:10px;
+                  border:1px solid var(--line);
+                "
+              >
+
+              <br>
+
+              <button
+                class="btn danger"
+                style="margin-top:8px"
+                data-remove-reference="${index}"
+              >
+                REMOVE IMAGE
+              </button>
+
+              `
+
+              :
+
+              `
+
+              <div class="small">
+
+                No reference image uploaded.
+
+              </div>
+
+              `
+
+            }
+
+          </div>
+
+
+        </div>
+
+        `
+
+      ).join("")
+
+    }
+
+
+    <button
+      class="btn success"
+      id="saveReferenceSettings"
+      style="
+        width:100%;
+        margin-top:15px;
+      "
+    >
+      SAVE ALL VIEW SETTINGS
+    </button>
+
+
+  </div>
+
+</div>
+
+`;
+
+
+/* Back */
+
+$("backToHelipads")
+.onclick =
+renderHelipads;
+
+
+/* Upload reference images */
+
+$("content")
+
+.querySelectorAll(
+"[data-reference-index]"
+)
+
+.forEach(
+input=>{
+
+input.onchange=()=>{
+
+const index =
+Number(
+input.dataset.referenceIndex
+);
+
+
+const file =
+input.files[0];
+
+
+if(!file)
+return;
+
+
+const reader =
+new FileReader();
+
+
+reader.onload=()=>{
+
+helipad
+.viewConfig[index]
+.reference =
+reader.result;
+
+
+saveDatabase();
+
+
+addAudit(
+
+"REFERENCE IMAGE",
+
+id +
+" / VIEW " +
+(index+1) +
+" UPLOADED"
+
+);
+
+
+openReferenceSettings(
+id
+);
+
+};
+
+
+reader.readAsDataURL(
+file
+);
+
+};
+
+});
+
+
+/* Remove reference */
+
+$("content")
+
+.querySelectorAll(
+"[data-remove-reference]"
+)
+
+.forEach(
+button=>{
+
+button.onclick=()=>{
+
+const index =
+Number(
+button.dataset.removeReference
+);
+
+
+helipad
+.viewConfig[index]
+.reference =
+null;
+
+
+saveDatabase();
+
+
+addAudit(
+
+"REFERENCE IMAGE",
+
+id +
+" / VIEW " +
+(index+1) +
+" REMOVED"
+
+);
+
+
+openReferenceSettings(
+id
+);
+
+};
+
+});
+
+
+/* Save settings */
+
+$("saveReferenceSettings")
+.onclick=()=>{
+
+helipad
+.viewConfig
+.forEach(
+(
+view,
+index
+)=>{
+
+view.label =
+
+$("viewName"+index)
+.value
+.trim()
+
+||
+
+"VIEW " +
+(index+1);
+
+
+view.bearing =
+
+(
+Number(
+$("viewBearing"+index)
+.value
+)
+
+%
+360
+
++
+360
+
+)
+
+%
+360;
+
+
+view.tolerance =
+
+Math.max(
+
+0,
+
+Math.min(
+
+45,
+
+Number(
+$("viewTolerance"+index)
+.value
+)
+
+||
+
+0
+
+)
+
+);
+
+});
+
+
+saveDatabase();
+
+
+addAudit(
+
+"REFERENCE SETTINGS",
+
+id +
+" VIEW CONFIGURATION UPDATED"
+
+);
+
+
+alert(
+"Reference image and bearing settings saved."
+);
+
+
+renderHelipads();
+
+};
+
+}
 /* ==============================
    USER MANAGEMENT
 ================================ */
