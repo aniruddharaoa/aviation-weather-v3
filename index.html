@@ -22,6 +22,10 @@ label{display:block;color:var(--yellow);font-size:12px;font-weight:800;margin:10
 #cameraOverlay{position:fixed;inset:0;background:#000;z-index:100}#cameraVideo{width:100%;height:100%;object-fit:cover}.cameraTop{position:absolute;top:15px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:105}.cameraBadge{background:rgba(4,18,31,.82);border:1px solid var(--yellow);color:var(--yellow);padding:8px 11px;border-radius:9px;font-weight:900}
 #guide{position:absolute;top:22%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);border-radius:12px;padding:10px 18px;font-weight:900;text-align:center;z-index:105}.guideRed{border:2px solid #ff4f48;color:#ff4f48}.guideYellow{border:2px solid var(--yellow);color:var(--yellow)}.guideGreen{border:2px solid #3be277;color:#3be277}#guideArrow{font-size:38px;animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.35}}
 #radialCanvas{position:absolute;left:3%;right:3%;bottom:178px;width:94%;height:170px;z-index:104;background:rgba(0,12,24,.18);border-radius:18px;pointer-events:none}.centerPointer{position:absolute;bottom:326px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:22px solid var(--yellow);z-index:106;filter:drop-shadow(0 0 5px #000)}.liveBearing{position:absolute;bottom:190px;left:50%;transform:translateX(-50%);z-index:106;font-size:42px;color:var(--yellow);font-weight:900;text-shadow:0 2px 5px #000}.weatherOverlay{position:absolute;bottom:112px;left:8px;right:8px;z-index:106;background:rgba(5,17,28,.82);padding:7px;border-radius:8px;text-align:center;font-size:11px}.cameraButtons{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:34px;align-items:center;z-index:106}.shutter{width:92px;height:92px;border-radius:50%;background:white;border:8px solid rgba(255,255,255,.48);box-shadow:0 0 0 2px rgba(0,0,0,.35)}#overrideBtn{font-size:17px;font-weight:900;padding:13px 18px;min-height:48px;border:1px solid var(--yellow);color:var(--yellow);background:rgba(5,17,28,.82)}#overrideBtn.overrideActive{background:#7a5210;color:#fff;border-color:#ffd21f}.overridePanel{position:absolute;inset:0;z-index:120;background:rgba(0,0,0,.58);display:flex;align-items:center;justify-content:center;padding:18px}.overrideCard{width:min(92vw,430px);background:#071b2d;border:1px solid #ffd21f;border-radius:16px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.55)}.overrideTitle{font-size:20px;font-weight:900;color:#ffd21f;text-align:center;margin-bottom:14px}.bearingAdjuster{display:grid;grid-template-columns:auto auto 1fr auto auto;gap:7px;align-items:center;margin:10px 0}.bearingAdjuster button{min-height:44px;font-weight:900}.overrideBearingValue{font-size:30px;font-weight:900;color:#ffd21f;text-align:center;min-width:88px}.overrideActions{display:flex;gap:10px;margin-top:14px}.overrideActions button{flex:1;min-height:46px;font-weight:900}.overrideHint{font-size:12px;color:#b9c8d6;margin-top:8px;text-align:center}
+
+.aviatorGallery{position:fixed;inset:0;z-index:6000;background:#000;display:flex;flex-direction:column;color:#fff}
+.aviatorGallery.hidden{display:none}.avGalleryHeader{min-height:58px;display:flex;align-items:center;gap:12px;padding:8px 10px;background:rgba(5,18,31,.97);border-bottom:1px solid #24445e}.avGalleryHeader .grow{flex:1;min-width:0}.avGalleryTitle{font-size:16px;font-weight:900;color:#ffd21f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.avGallerySub{font-size:11px;color:#aebdcc;margin-top:2px}.avGalleryCounter{font-weight:900;min-width:48px;text-align:right}.avGalleryStage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000;touch-action:pan-y pinch-zoom}.avGalleryStage img{width:100%;height:100%;object-fit:contain;display:block}.avGalleryHint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(0,0,0,.58);border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:18px;font-size:11px;pointer-events:none}.avGalleryNav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:62px;border-radius:12px;background:rgba(0,0,0,.45);color:#fff;border:1px solid rgba(255,255,255,.22);font-size:28px;z-index:3}.avGalleryPrev{left:8px}.avGalleryNext{right:8px}.avGalleryMeta{background:rgba(5,18,31,.97);border-top:1px solid #24445e;padding:9px 12px;font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.avViewCard{cursor:pointer}.avViewCard:active{transform:scale(.985)}.avViewThumb{position:relative}.avViewCount{position:absolute;right:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.25);padding:4px 7px;border-radius:12px;font-size:11px;font-weight:900;color:#fff}
+
 @media(max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr}.brand{font-size:14px}main{padding:8px}header{align-items:flex-start}}
 </style>
 </head>
@@ -69,8 +73,24 @@ label{display:block;color:var(--yellow);font-size:12px;font-weight:800;margin:10
 </div>
 </section>
 
+
+<section id="aviatorGallery" class="aviatorGallery hidden">
+  <div class="avGalleryHeader">
+    <button class="btn danger" id="closeAviatorGallery">✕</button>
+    <div class="grow"><div id="aviatorGalleryTitle" class="avGalleryTitle">IMAGE HISTORY</div><div id="aviatorGallerySub" class="avGallerySub"></div></div>
+    <div id="aviatorGalleryCounter" class="avGalleryCounter">1 / 1</div>
+  </div>
+  <div id="aviatorGalleryStage" class="avGalleryStage">
+    <button id="aviatorGalleryPrev" class="avGalleryNav avGalleryPrev">‹</button>
+    <img id="aviatorGalleryImage" alt="Operational helipad image">
+    <button id="aviatorGalleryNext" class="avGalleryNav avGalleryNext">›</button>
+    <div class="avGalleryHint">Swipe left/right • Pinch to zoom</div>
+  </div>
+  <div id="aviatorGalleryMeta" class="avGalleryMeta"></div>
+</section>
+
 <script>
-/* AWO CAMERA HOTFIX V5.1 - rear camera only, robust compass, visible radial, in-camera override */
+/* AWO V5.2 AVIATOR GALLERY + EMBEDDED WEATHER - rear camera only, robust compass, visible radial, in-camera override */
 "use strict";
 const DBKEY="AWO_HYBRID_DATABASE", OLD_DBKEY="awo_v2_foundation_db", SESSIONKEY="AWO_SESSION";
 const WEATHER_CODES=["NIL","HZ","BR","FG","-DZ","DZ","+DZ","-RA","RA","+RA","-SN","SN","+SN","TS","SHRA","GR","GS"];
@@ -297,59 +317,71 @@ function applyOverride(){
   updateCameraUI();
 }
 function drawEmbedded(ctx,canvas,h,v){
-  const W=canvas.width,H=canvas.height,s=Math.max(1,W/1000),top=Math.round(128*s),bottom=Math.round(205*s);
-  ctx.fillStyle="rgba(0,15,28,.72)";ctx.fillRect(0,0,W,top);ctx.fillRect(0,H-bottom,W,bottom);
+  const W=canvas.width,H=canvas.height,s=Math.max(1,W/1000),top=Math.round(128*s),bottom=Math.round(260*s);
+  ctx.fillStyle="rgba(0,15,28,.74)";ctx.fillRect(0,0,W,top);ctx.fillRect(0,H-bottom,W,bottom);
   ctx.strokeStyle="#ffd21f";ctx.fillStyle="#ffd21f";ctx.lineWidth=Math.max(2,3*s);ctx.textAlign="center";
-  const center=W/2,current=effectiveBearing();
-  const base=current==null?0:current;
-  for(let o=-60;o<=60;o+=10){
-    const px=center+(o/60)*(W*.43),b=(Math.round(base/10)*10+o+360)%360;
-    ctx.beginPath();ctx.moveTo(px,14*s);ctx.lineTo(px,45*s);ctx.stroke();
-    if(o%20===0){ctx.font=`${Math.round(18*s)}px Arial`;ctx.fillText(b+"°",px,73*s)}
-  }
+  const center=W/2,current=effectiveBearing(),base=current==null?0:current;
+  for(let o=-60;o<=60;o+=10){const px=center+(o/60)*(W*.43),b=(Math.round(base/10)*10+o+360)%360;ctx.beginPath();ctx.moveTo(px,14*s);ctx.lineTo(px,45*s);ctx.stroke();if(o%20===0){ctx.font=`${Math.round(18*s)}px Arial`;ctx.fillText(b+"°",px,73*s)}}
   ctx.lineWidth=Math.max(3,5*s);ctx.beginPath();ctx.moveTo(center,8*s);ctx.lineTo(center,92*s);ctx.stroke();
-  ctx.textAlign="left";ctx.font=`bold ${Math.round(30*s)}px Arial`;
-  ctx.fillText(current==null?"COMPASS UNAVAILABLE":`${Math.round(current)}° ${dir(current)}${cam.override?" MANUAL":""}`,22*s,H-bottom+45*s);
-  ctx.fillStyle="white";ctx.font=`${Math.round(19*s)}px Arial`;
-  ctx.fillText(`${cam.helipad} • ${v.label} • TARGET ${v.bearing}° ±${v.tolerance}°`,22*s,H-bottom+78*s);
-  const o=officialObs(h);
+
+  const o=officialObs(h),wx=o?(o.weather||o.weatherCodes||[]):[];
+  ctx.textAlign="left";ctx.font=`bold ${Math.round(29*s)}px Arial`;
+  ctx.fillText(current==null?"COMPASS UNAVAILABLE":`${Math.round(current)}° ${dir(current)}${cam.override?" • MANUAL":""}`,22*s,H-bottom+38*s);
+  ctx.fillStyle="#ffd21f";ctx.font=`bold ${Math.round(18*s)}px Arial`;ctx.fillText("WEATHER AT TIME OF CAPTURE",22*s,H-bottom+72*s);
+  ctx.fillStyle="white";ctx.font=`${Math.round(18*s)}px Arial`;ctx.fillText(`${cam.helipad} • ${v.label} • TARGET ${v.bearing}° ±${v.tolerance}°`,22*s,H-bottom+102*s);
   if(o){
-    ctx.fillText(`VIS ${o.visibility}m • WX ${(o.weather||o.weatherCodes||[]).join(" ")} • ${o.hillTop} • ${o.htStatus}${o.cloud?" • "+o.cloud:""}`,22*s,H-bottom+111*s);
-    if(o.metar)ctx.fillText(`METAR: ${String(o.metar).slice(0,70)}`,22*s,H-bottom+142*s);
-  }
-  const overrideText=cam.override?` • OVERRIDE: ${cam.overrideReason}${cam.overrideRemarks?" / "+cam.overrideRemarks:""}`:"";
-  ctx.fillText(`${currentUser().id} • ${new Date().toLocaleString()}${overrideText}`,22*s,H-18*s);
+    ctx.fillText(`VIS ${o.visibility ?? "—"} m • WX ${wx.join(" ")||"—"}`,22*s,H-bottom+132*s);
+    ctx.fillText(`CONDITION ${o.hillTop||"—"} • HILL TOP ${o.htStatus||"—"}${o.cloud?" • CLOUD "+o.cloud:""}`,22*s,H-bottom+162*s);
+    ctx.fillText(`COLOUR ${o.systemColour||o.observerColour||calcColour(h,o)||"—"} • SOURCE ${o.source||"—"}`,22*s,H-bottom+192*s);
+    if(o.metar){const met=String(o.metar).replace(/\s+/g," ").slice(0,84);ctx.font=`${Math.round(15*s)}px Arial`;ctx.fillText(`METAR ${met}`,22*s,H-bottom+220*s)}
+  }else{ctx.fillText("WEATHER DATA NOT AVAILABLE AT CAPTURE TIME",22*s,H-bottom+142*s)}
+  ctx.font=`${Math.round(16*s)}px Arial`;const overrideText=cam.override?` • OVERRIDE ${cam.overrideReason}${cam.overrideRemarks?" / "+cam.overrideRemarks:""}`:"";
+  ctx.fillText(`${currentUser().id} • ${new Date().toLocaleString()}${overrideText}`,22*s,H-16*s);
 }
 function captureImage(){
-  const video=$("cameraVideo");
-  if(!video.videoWidth)return alert("Camera is not ready.");
+  const video=$("cameraVideo");if(!video.videoWidth)return alert("Camera is not ready.");
   const h=db.helipads[cam.helipad],v=h.viewConfig[cam.viewIndex],b=effectiveBearing();
   if(b!=null&&Math.abs(angleDiff(v.bearing,b))>v.tolerance&&!cam.override)return alert("Bearing outside tolerance. Align or use override.");
   if(b==null&&!cam.override)return alert("Compass unavailable. Use override before capture.");
-  const c=$("captureCanvas");c.width=video.videoWidth;c.height=video.videoHeight;
-  const ctx=c.getContext("2d");ctx.drawImage(video,0,0,c.width,c.height);drawEmbedded(ctx,c,h,v);
-  const data=c.toDataURL("image/jpeg",.84);
-  db.images.push({id:"IMG-"+Date.now(),helipad:cam.helipad,source:cam.source,user:currentUser().id,viewId:v.id,viewLabel:v.label,target:v.bearing,tolerance:v.tolerance,bearing:b,override:cam.override,overrideReason:cam.overrideReason,overrideRemarks:cam.overrideRemarks,time:new Date().toISOString(),data});
+
+  const o=officialObs(h);
+  const weatherSnapshot=o?{observationId:o.id||null,time:o.time||o.observedAt||null,visibility:o.visibility??null,weather:[...(o.weather||o.weatherCodes||[])],hillTop:o.hillTop||"",htStatus:o.htStatus||"",cloud:o.cloud||"",systemColour:o.systemColour||"",observerColour:o.observerColour||"",source:o.source||"",metar:o.metar||""}:null;
+
+  const c=$("captureCanvas");c.width=video.videoWidth;c.height=video.videoHeight;const ctx=c.getContext("2d");ctx.drawImage(video,0,0,c.width,c.height);drawEmbedded(ctx,c,h,v);
+  const data=c.toDataURL("image/jpeg",.80);
+
+  db.images.push({id:"IMG-"+Date.now(),helipad:cam.helipad,source:cam.source,user:currentUser().id,viewId:v.id,viewLabel:v.label,target:v.bearing,tolerance:v.tolerance,bearing:b,override:cam.override,overrideReason:cam.overrideReason,overrideRemarks:cam.overrideRemarks,observationId:weatherSnapshot?.observationId||null,weatherSnapshot,time:new Date().toISOString(),data});
   save();audit("CAPTURE_IMAGE",cam.helipad+" "+v.label+(cam.override?" OVERRIDE":""));
   cam.viewIndex++;
-  if(cam.viewIndex>=h.viewConfig.length){
-    db.requests.filter(r=>r.helipad===cam.helipad&&r.status==="PENDING").forEach(r=>r.status="COMPLETE");
-    save();alert("All required views captured.");closeCamera();return;
-  }
-  cam.override=false;cam.overrideBearing=null;cam.overrideReason="";cam.overrideRemarks="";
-  $("overrideBtn").classList.remove("overrideActive");$("overrideBtn").textContent="OVERRIDE";
-  updateCameraUI();
+  if(cam.viewIndex>=h.viewConfig.length){db.requests.filter(r=>r.helipad===cam.helipad&&r.status==="PENDING").forEach(r=>r.status="COMPLETE");save();alert("All required views captured.");closeCamera();return}
+  cam.override=false;cam.overrideBearing=null;cam.overrideReason="";cam.overrideRemarks="";$("overrideBtn").classList.remove("overrideActive");$("overrideBtn").textContent="OVERRIDE";updateCameraUI();
 }
 function closeCamera(){stopCompass();if(cam.stream){cam.stream.getTracks().forEach(t=>t.stop());cam.stream=null}$("overridePanel").classList.add("hidden");$("cameraOverlay").classList.add("hidden")}
 function openReference(){const v=db.helipads[cam.helipad]?.viewConfig?.[cam.viewIndex];if(!v?.reference)return alert("No Administrator reference image uploaded.");const w=window.open("");if(!w)return alert("Popup blocked.");w.document.write(`<body style="margin:0;background:#000"><img src="${v.reference}" style="width:100%;height:auto;display:block"></body>`)}
 let aviatorFilter="ALL";
+let aviatorGalleryState={images:[],index:0,helipad:null,viewId:null};
+function imageTime(i){return new Date(i.time||i.capturedAt||0).getTime()}
+function viewImages(helipadId,viewId){return db.images.filter(i=>(i.helipad===helipadId||i.helipadId===helipadId)&&i.viewId===viewId).sort((a,b)=>imageTime(b)-imageTime(a))}
+function openAviatorGallery(helipadId,viewId){const images=viewImages(helipadId,viewId);if(!images.length)return alert("No images available for this view.");aviatorGalleryState={images,index:0,helipad:helipadId,viewId};$("aviatorGallery").classList.remove("hidden");renderAviatorGallery()}
+function closeAviatorGallery(){$("aviatorGallery").classList.add("hidden");$("aviatorGalleryImage").src=""}
+function renderAviatorGallery(){const s=aviatorGalleryState,i=s.images[s.index];if(!i)return;$("aviatorGalleryTitle").textContent=`${s.helipad} — ${i.viewLabel||i.viewId||"IMAGE"}`;$("aviatorGalleryCounter").textContent=`${s.index+1} / ${s.images.length}`;$("aviatorGallerySub").textContent=`Newest to oldest • ${fmt(i.time||i.capturedAt)}`;$("aviatorGalleryImage").src=i.data||i.dataUrl||"";const w=i.weatherSnapshot;$("aviatorGalleryMeta").innerHTML=`<span><b>${i.bearing==null?"BEARING —":Math.round(i.bearing)+"° "+dir(i.bearing)}</b>${i.override?" • MANUAL OVERRIDE":""}</span><span>${w?`VIS ${esc(w.visibility??"—")} m • ${esc((w.weather||[]).join(" ")||"—")} • ${esc(w.hillTop||"—")} • ${esc(w.htStatus||"—")}`:"Weather is permanently embedded in image"}</span>`;$("aviatorGalleryPrev").style.visibility=s.index>0?"visible":"hidden";$("aviatorGalleryNext").style.visibility=s.index<s.images.length-1?"visible":"hidden"}
+function previousAviatorGalleryImage(){if(aviatorGalleryState.index>0){aviatorGalleryState.index--;renderAviatorGallery()}}
+function nextAviatorGalleryImage(){if(aviatorGalleryState.index<aviatorGalleryState.images.length-1){aviatorGalleryState.index++;renderAviatorGallery()}}
 function renderAviator(){const u=currentUser(),hs=u.helipads.map(id=>db.helipads[id]).filter(Boolean);$("content").innerHTML=`<div class="card"><div class="cardTitle">LATEST HELIPAD WEATHER</div><div class="cardBody"><input id="aviatorSearch" placeholder="Search helipad"><div class="choiceRow" id="avFilters" style="margin:10px 0">${["ALL","GREEN","YELLOW","RED","PURPLE","GREY"].map(c=>`<button class="btn" data-av-filter="${c}">${c}</button>`).join("")}</div><div class="tableWrap"><table id="aviatorTable"><tr><th>Helipad</th><th>VIS</th><th>Weather</th><th>Hill Top</th><th>HT Status</th><th>Status</th><th>Source</th><th>Image</th><th>Updated</th></tr>${hs.map(h=>{const o=officialObs(h),i=latestImage(h.id),s=statusFor(h);return`<tr data-status="${s}"><td><button class="btn" data-av-open="${esc(h.id)}">${esc(h.id)}</button></td><td>${o?esc(o.visibility):"—"}</td><td>${o?esc((o.weather||o.weatherCodes||[]).join(" ")):"—"}</td><td>${o?esc(o.hillTop):"—"}</td><td>${o?esc(o.htStatus):"—"}</td><td><span class="status ${s}">${s}</span></td><td>${o?esc(o.source):"—"}</td><td>${i?"📷 "+esc(i.source||""):"📷 NO IMAGE"}</td><td>${o?fmt(o.time||o.observedAt):"—"}</td></tr>`}).join("")}</table></div></div></div>`;$("aviatorSearch").oninput=filterAv;$("avFilters").querySelectorAll("[data-av-filter]").forEach(b=>b.onclick=()=>{aviatorFilter=b.dataset.avFilter;filterAv()});$("content").querySelectorAll("[data-av-open]").forEach(b=>b.onclick=()=>openAviatorHelipad(b.dataset.avOpen))}
 function filterAv(){const q=($("aviatorSearch")?.value||"").toUpperCase();$("aviatorTable").querySelectorAll("tr[data-status]").forEach(r=>r.style.display=(r.textContent.toUpperCase().includes(q)&&(aviatorFilter==="ALL"||r.dataset.status===aviatorFilter))?"":"none")}
-function openAviatorHelipad(id){const h=db.helipads[id],o=officialObs(h),imgs=db.images.filter(i=>i.helipad===id||i.helipadId===id).sort((x,y)=>new Date(y.time||y.capturedAt)-new Date(x.time||x.capturedAt)).slice(0,8),obs=db.observations.filter(x=>x.helipad===id||x.helipadId===id).sort((x,y)=>new Date(y.time||y.observedAt)-new Date(x.time||x.observedAt)).slice(0,5),airs=db.airreps.filter(a=>a.helipad1===id||a.helipad2===id).sort((x,y)=>new Date(y.time)-new Date(x.time)),s=statusFor(h);$("content").innerHTML=`<button class="btn" id="backAv">← BACK</button><div class="card"><div class="cardTitle">${esc(id)} — LATEST STATUS</div><div class="cardBody"><h2><span class="status ${s}">${s}</span></h2>${o?`<h3>VIS ${esc(o.visibility)} m • ${esc((o.weather||o.weatherCodes||[]).join(" "))} • ${esc(o.hillTop)} • ${esc(o.htStatus)}</h3>`:"NO VALID WEATHER"}<button class="btn primary" id="requestAvImg">REQUEST LATEST IMAGE</button></div></div><div class="card"><div class="cardTitle">VALID AIRREPs</div><div class="cardBody">${airs.slice(0,10).map(a=>`<div class="history"><b>${esc(a.user)}</b> • ${fmt(a.time)}<br>${esc(a.enroute||"")}</div>`).join("")||"No AIRREP."}</div></div><div class="card"><div class="cardTitle">REFERENCE IMAGES</div><div class="cardBody imgGrid">${(h.viewConfig||[]).map(v=>`<div class="imgCard"><b>${esc(v.label)} • ${v.bearing}°</b>${v.reference?`<img src="${v.reference}">`:"<br>No reference image"}</div>`).join("")}</div></div><div class="card"><div class="cardTitle">LATEST IMAGES</div><div class="cardBody imgGrid">${imgs.map(i=>`<div class="imgCard"><img src="${i.data||i.dataUrl}"><b>${esc(i.viewLabel||i.viewId||"")}</b><br>${i.bearing==null?"Bearing override":esc(i.bearing)+"° "+dir(i.bearing)}<br><span class="small">${fmt(i.time||i.capturedAt)}</span></div>`).join("")||"NO IMAGE"}</div></div><div class="card"><div class="cardTitle">PREVIOUS 5 WEATHER RECORDS</div><div class="cardBody">${obs.map(x=>`<div class="history">${fmt(x.time||x.observedAt)}<br>VIS ${esc(x.visibility)} • ${esc((x.weather||x.weatherCodes||[]).join(" "))} • ${esc(x.hillTop)} • ${esc(x.htStatus)}${x.metar?"<br>"+esc(x.metar):""}</div>`).join("")}</div></div>`;$("backAv").onclick=renderAviator;$("requestAvImg").onclick=()=>{const pending=db.requests.find(r=>r.helipad===id&&r.status==="PENDING");if(pending)return alert("A request is already pending.");db.requests.unshift({id:"REQ-"+Date.now(),type:"IMAGE",helipad:id,requestedBy:currentUser().id,status:"PENDING",time:new Date().toISOString()});save();audit("AVIATOR_IMAGE_REQUEST",id);alert("Image request created.")}}
+function openAviatorHelipad(id){
+  const h=db.helipads[id],o=officialObs(h),obs=db.observations.filter(x=>x.helipad===id||x.helipadId===id).sort((x,y)=>new Date(y.time||y.observedAt)-new Date(x.time||x.observedAt)).slice(0,5),airs=db.airreps.filter(a=>a.helipad1===id||a.helipad2===id).sort((x,y)=>new Date(y.time)-new Date(x.time)),s=statusFor(h);
+  const viewCards=(h.viewConfig||[]).map(v=>{const all=viewImages(id,v.id),latest=all[0];return `<div class="imgCard avViewCard" data-av-view="${esc(v.id)}"><div class="avViewThumb">${latest?`<img src="${latest.data||latest.dataUrl}">`:`<div style="min-height:150px;display:flex;align-items:center;justify-content:center;background:#061728">NO IMAGE</div>`}<span class="avViewCount">${all.length} IMAGE${all.length===1?"":"S"}</span></div><b>${esc(v.label)} • ${v.bearing}°</b><br><span class="small">${latest?`Latest ${fmt(latest.time||latest.capturedAt)} • Tap to open history`:"No history"}</span></div>`}).join("");
+  $("content").innerHTML=`<button class="btn" id="backAv">← BACK</button><div class="card"><div class="cardTitle">${esc(id)} — LATEST STATUS</div><div class="cardBody"><h2><span class="status ${s}">${s}</span></h2>${o?`<h3>VIS ${esc(o.visibility)} m • ${esc((o.weather||o.weatherCodes||[]).join(" "))} • ${esc(o.hillTop)} • ${esc(o.htStatus)}</h3>`:"NO VALID WEATHER"}<button class="btn primary" id="requestAvImg">REQUEST LATEST IMAGE</button></div></div><div class="card"><div class="cardTitle">VALID AIRREPs</div><div class="cardBody">${airs.slice(0,10).map(a=>`<div class="history"><b>${esc(a.user)}</b> • ${fmt(a.time)}<br>${esc(a.enroute||"")}</div>`).join("")||"No AIRREP."}</div></div><div class="card"><div class="cardTitle">REFERENCE IMAGES</div><div class="cardBody imgGrid">${(h.viewConfig||[]).map(v=>`<div class="imgCard"><b>${esc(v.label)} • ${v.bearing}°</b>${v.reference?`<img src="${v.reference}">`:"<br>No reference image"}</div>`).join("")}</div></div><div class="card"><div class="cardTitle">LATEST IMAGES — TAP A VIEW FOR COMPLETE HISTORY</div><div class="cardBody imgGrid">${viewCards||"NO IMAGE"}</div></div><div class="card"><div class="cardTitle">PREVIOUS 5 WEATHER RECORDS</div><div class="cardBody">${obs.map(x=>`<div class="history">${fmt(x.time||x.observedAt)}<br>VIS ${esc(x.visibility)} • ${esc((x.weather||x.weatherCodes||[]).join(" "))} • ${esc(x.hillTop)} • ${esc(x.htStatus)}${x.metar?"<br>"+esc(x.metar):""}</div>`).join("")}</div></div>`;
+  $("backAv").onclick=renderAviator;$("requestAvImg").onclick=()=>{const pending=db.requests.find(r=>r.helipad===id&&r.status==="PENDING");if(pending)return alert("A request is already pending.");db.requests.unshift({id:"REQ-"+Date.now(),type:"IMAGE",helipad:id,requestedBy:currentUser().id,status:"PENDING",time:new Date().toISOString()});save();audit("AVIATOR_IMAGE_REQUEST",id);alert("Image request created.")};
+  $("content").querySelectorAll("[data-av-view]").forEach(card=>card.onclick=()=>openAviatorGallery(id,card.dataset.avView));
+}
 function renderAIRREP(){const u=currentUser(),opts=u.helipads.map(id=>`<option>${esc(id)}</option>`).join("");$("content").innerHTML=`<div class="card"><div class="cardTitle">NEW AIRREP</div><div class="cardBody"><label>Helipad 1</label><select id="airH1">${opts}</select><label>Temperature</label><input id="airT1" type="number"><label>Pressure</label><input id="airP1" type="number"><select id="airPT1"><option>QFE</option><option>QNH</option><option>QFF</option></select><label>Helipad 2 (optional)</label><select id="airH2"><option value="">NONE</option>${opts}</select><label>Temperature</label><input id="airT2" type="number"><label>Pressure</label><input id="airP2" type="number"><select id="airPT2"><option>QFE</option><option>QNH</option><option>QFF</option></select><label>Enroute Remarks</label><textarea id="airRemarks"></textarea><button class="btn success" id="submitAir">SUBMIT AIRREP</button></div></div><div class="card"><div class="cardTitle">MY AIRREP HISTORY</div><div class="cardBody">${db.airreps.filter(a=>a.user===u.id).sort((x,y)=>new Date(y.time)-new Date(x.time)).map(a=>`<div class="history"><b>${esc(a.helipad1)}${a.helipad2?" → "+esc(a.helipad2):""}</b> • ${fmt(a.time)}<br>${esc(a.enroute||"")}</div>`).join("")||"No AIRREP."}</div></div>`;$("submitAir").onclick=()=>{const h1=$("airH1").value;if(!h1)return alert("Select helipad.");db.airreps.push({id:"AIR-"+Date.now(),user:u.id,time:new Date().toISOString(),helipad1:h1,temp1:$("airT1").value,pressure1:$("airP1").value,pressureType1:$("airPT1").value,helipad2:$("airH2").value,temp2:$("airT2").value,pressure2:$("airP2").value,pressureType2:$("airPT2").value,enroute:$("airRemarks").value});save();audit("AIRREP_SUBMIT","AIRREP submitted");alert("AIRREP submitted.");renderAIRREP()}}
 function renderAviatorAlerts(){const u=currentUser(),p=db.aviatorPrefs[u.id]||{};$("content").innerHTML=`<div class="card"><div class="cardTitle">PERSONAL HELIPAD NOTIFICATIONS</div><div class="cardBody">${u.helipads.map(h=>`<div class="history"><b>${esc(h)}</b><br>${["YELLOW","RED","PURPLE","GREY","RETURN GREEN"].map(a=>`<label style="display:inline-block;margin-right:10px"><input type="checkbox" data-alert-h="${esc(h)}" data-alert-t="${a}" ${(p[h]||[]).includes(a)?"checked":""}> ${a}</label>`).join("")}</div>`).join("")}</div></div>`;$("content").querySelectorAll("[data-alert-h]").forEach(ch=>ch.onchange=()=>{const uid=u.id,h=ch.dataset.alertH,t=ch.dataset.alertT;db.aviatorPrefs[uid]=db.aviatorPrefs[uid]||{};db.aviatorPrefs[uid][h]=db.aviatorPrefs[uid][h]||[];if(ch.checked&&!db.aviatorPrefs[uid][h].includes(t))db.aviatorPrefs[uid][h].push(t);if(!ch.checked)db.aviatorPrefs[uid][h]=db.aviatorPrefs[uid][h].filter(x=>x!==t);save()})}
 function renderCompare(){const u=currentUser();$("content").innerHTML=`<div class="card"><div class="cardTitle">COMPARE HELIPADS</div><div class="cardBody tableWrap"><table><tr><th>Helipad</th><th>Status</th><th>VIS</th><th>Weather</th><th>Hill Top</th><th>HT Status</th><th>Latest Image</th></tr>${u.helipads.map(id=>{const h=db.helipads[id],o=h?officialObs(h):null,i=latestImage(id);return`<tr><td>${esc(id)}</td><td>${h?`<span class="status ${statusFor(h)}">${statusFor(h)}</span>`:"—"}</td><td>${o?esc(o.visibility):"—"}</td><td>${o?esc((o.weather||o.weatherCodes||[]).join(" ")):"—"}</td><td>${o?esc(o.hillTop):"—"}</td><td>${o?esc(o.htStatus):"—"}</td><td>${i?fmt(i.time||i.capturedAt):"NO IMAGE"}</td></tr>`}).join("")}</table></div></div>`}
 $("loginBtn").onclick=login;$("loginPass").addEventListener("keydown",e=>{if(e.key==="Enter")login()});$("logoutBtn").onclick=logout;$("themeBtn").onclick=()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==="light"?"dark":"light";localStorage.setItem("AWO_THEME",document.documentElement.dataset.theme)};document.documentElement.dataset.theme=localStorage.getItem("AWO_THEME")||"dark";
+$("closeAviatorGallery").onclick=closeAviatorGallery;$("aviatorGalleryPrev").onclick=previousAviatorGalleryImage;$("aviatorGalleryNext").onclick=nextAviatorGalleryImage;
+let avTouchX=0,avTouchY=0;$("aviatorGalleryStage").addEventListener("touchstart",e=>{const t=e.changedTouches[0];avTouchX=t.screenX;avTouchY=t.screenY},{passive:true});$("aviatorGalleryStage").addEventListener("touchend",e=>{const t=e.changedTouches[0],dx=t.screenX-avTouchX,dy=t.screenY-avTouchY;if(Math.abs(dx)<50||Math.abs(dx)<Math.abs(dy))return;dx<0?nextAviatorGalleryImage():previousAviatorGalleryImage()},{passive:true});
 $("closeCamera").onclick=closeCamera;$("captureBtn").onclick=captureImage;$("overrideBtn").onclick=openOverride;$("referenceButton").onclick=openReference;
 $("bearingMinus10").onclick=()=>changeOverrideBearing(-10);$("bearingMinus1").onclick=()=>changeOverrideBearing(-1);$("bearingPlus1").onclick=()=>changeOverrideBearing(1);$("bearingPlus10").onclick=()=>changeOverrideBearing(10);
 $("overrideBearingInput").oninput=()=>{const b=normaliseBearing($("overrideBearingInput").value);if(b!==null){cam.overrideBearing=b;$("overrideBearingValue").textContent=Math.round(b).toString().padStart(3,"0")+"°"}};
